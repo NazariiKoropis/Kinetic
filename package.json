@@ -1,0 +1,11 @@
+{
+  "name": "kinetic",
+  "version": "1.0.0",
+  "description": "kinetic project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NazariiKoropis",
+  "license": "ISC"
+}

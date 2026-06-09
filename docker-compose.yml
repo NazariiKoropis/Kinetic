@@ -1,0 +1,68 @@
+services:
+  kinetic-mongodb:
+    image: mongo:latest
+    container_name: kinetic-database
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_DATABASE}
+    volumes:
+      - ./database:/data/db
+    networks:
+      - kinetic-network
+
+  kinetic-api:
+    build:
+      context: ./kinetic-api
+      dockerfile: Dockerfile
+    container_name: kinetic-api
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./kinetic-api:/app
+      - /app/node_modules
+
+    env_file:
+      - .env
+    depends_on:
+      - kinetic-mongodb
+    command: npm run dev -- -L
+    networks:
+      - kinetic-network
+
+  kinetic-cms:
+    build:
+      context: ./kinetic-cms
+      dockerfile: Dockerfile
+    container_name: kinetic-cms
+    ports:
+      - '5174:5174'
+    volumes:
+      - ./kinetic-cms:/app
+      - /app/node_modules
+    depends_on:
+      - kinetic-api
+    networks:
+      - kinetic-network
+
+  kinetic-web:
+    build:
+      context: ./kinetic-web
+      dockerfile: Dockerfile
+    container_name: kinetic-web
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./kinetic-web:/app
+      - /app/node_modules
+    depends_on:
+      - kinetic-api
+    networks:
+      - kinetic-network
+
+networks:
+  kinetic-network:
+    driver: bridge
