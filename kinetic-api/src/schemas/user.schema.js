@@ -5,7 +5,7 @@ const userRegisterSchema = z.object({
     surname: z.string().min(3).max(50),
     username: z.string().min(3).max(50),
     gender: z.enum(['male', 'female']),
-    birthDate: z.date(),
+    birthDate: z.coerce.date(),
     email: z.string().email(),
     password: z.string().min(8).max(50),
 })

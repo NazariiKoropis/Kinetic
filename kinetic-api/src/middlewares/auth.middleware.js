@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
 
-const authCheck = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -15,7 +15,7 @@ const authCheck = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.ACCESS_SECRET_KEY);
 
-        req.user = decoded;
+        req.user = { id: decoded.id, role: decoded.role };
 
         next();
     } catch (e) {
@@ -23,4 +23,4 @@ const authCheck = async (req, res, next) => {
     }
 }
 
-export default authCheck;
+export default verifyToken;
