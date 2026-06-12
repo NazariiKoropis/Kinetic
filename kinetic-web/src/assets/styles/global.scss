@@ -1,0 +1,35 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+@use "./reset";
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    clip-path: inset(100%);
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+
+body {
+    //font-family: $font-primary;
+    //background-color: var(--bg-main);
+    // color: var(--text-primary);
+    position: relative;
+    //   font-size: $fz-md;
+
+    // line-height: $lh-base;
+    //font-weight: $fw-regular;
+    letter-spacing: 0;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}

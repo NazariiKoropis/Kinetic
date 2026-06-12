@@ -55,5 +55,11 @@ export default defineConfig(({ mode }) => ({
     watch: {
       usePolling: true,
     },
+    proxy: {
+      '/api': {
+        target: 'http://kinetic-api:5000',
+        changeOrigin: true,
+      }
+    }
   }
 }))
