@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
 
-const verifyToken = async (req, res, next) => {
+import { ROLES } from "#constants/ROLES";
+
+const checkAuth = async (req, res, next) => {
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -9,7 +11,7 @@ const verifyToken = async (req, res, next) => {
     }
 
     if (!token) {
-        return res.status(401).json({ error: 'Ви не авторизовані. Токен відсутній.' });
+        return res.status(401).json({ error: 'You are not authorized' });
     }
 
     try {
@@ -19,8 +21,23 @@ const verifyToken = async (req, res, next) => {
 
         next();
     } catch (e) {
-        return res.status(401).json({ error: 'Невалідний або прострочений токен.', message: e.message, });
+        return res.status(401).json({ error: 'Invaid token', message: e.message, });
     }
 }
 
-export default verifyToken;
+
+const checkRole = (req, res, next) => {
+    try {
+        if (!req.user) return res.status(401).json({ message: 'Unauthorized' })
+
+        if (req.user.role !== ROLES.ADMIN) return res.status(500).json({ message: 'Forbidden' })
+
+        next()
+    } catch (e) {
+        console.error('Auth Middleware Error:', e);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+export default { checkAuth, checkRole };
