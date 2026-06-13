@@ -9,7 +9,7 @@
       "@constants/*": ["src/constants/*"],
       "@pages/*": ["src/pages/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@redux/*": ["src/redux/*"],
+      "@store/*": ["src/store/*"],
       "@utils/*": ["src/utils/*"],
       "@styles/*": ["src/assets/styles/*"],
       "@images/*": ["src/assets/images/*"]

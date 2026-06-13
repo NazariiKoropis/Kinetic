@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => ({
       '@pages': path.resolve(__dirname, './src/pages'),
 
       // store
-      '@redux': path.resolve(__dirname, './src/redux'),
+      '@store': path.resolve(__dirname, './src/store'),
 
       // utils
       '@utils': path.resolve(__dirname, './src/utils'),
