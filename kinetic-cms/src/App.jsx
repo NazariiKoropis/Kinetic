@@ -1,20 +1,18 @@
 // test comment for App.jsx HMR
 //libs
-import { Route, Routes, Navigate } from 'react-router-dom'
-
-//pages public
-import Login from '@pages/login'
-
+import Layout from '@layout/Layout'
+import ChangeHistory from '@pages/change-history'
 //protected
 import Dashboard from '@pages/dashboard'
-import People from '@pages/people'
 import Films from '@pages/films'
+//pages public
+import Login from '@pages/login'
+import People from '@pages/people'
 import Reports from '@pages/reports'
-import ChangeHistory from '@pages/change-history'
+import { Navigate,Route, Routes } from 'react-router-dom'
 
 //components
 import ProtectedRoute from './routes/ProtectedRoute'
-import Layout from '@layout/Layout'
 
 function App() {
   return (
