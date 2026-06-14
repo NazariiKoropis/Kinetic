@@ -1,13 +1,27 @@
-//router-dom
+//components
+import SideBar from '@layout/SideBar'
+import { Box } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 
-//components
-
-function Layout() {
+const Layout = () => {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'row' }}>
-      <main style={{ flex: '1' }}>{<Outlet />}</main>
-    </div>
+    <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'row' }}>
+      <>
+        <SideBar />
+
+        <Box
+          compoments="main"
+          sx={{
+            display: 'flex',
+            flexGrow: 1,
+            p: 4,
+            bgcolor: 'Background.default',
+          }}
+        >
+          <Outlet />
+        </Box>
+      </>
+    </Box>
   )
 }
 

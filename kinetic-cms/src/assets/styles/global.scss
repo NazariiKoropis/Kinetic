@@ -1,5 +1,4 @@
 @use "./variables" as *;
-@use "./mixins" as *;
 @use "./reset";
 
 .visually-hidden {
@@ -17,14 +16,14 @@
 
 body {
     //font-family: $font-primary;
-    //background-color: var(--bg-main);
+    background-color: var(--cms-bg-main);
     // color: var(--text-primary);
+    color: var(--cms-text-main);
     position: relative;
-    //   font-size: $fz-md;
+    letter-spacing: 0;
 
     // line-height: $lh-base;
     //font-weight: $fw-regular;
-    letter-spacing: 0;
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
