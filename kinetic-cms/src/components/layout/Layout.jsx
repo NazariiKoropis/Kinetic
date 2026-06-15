@@ -15,7 +15,7 @@ const Layout = () => {
             display: 'flex',
             flexGrow: 1,
             p: 4,
-            bgcolor: 'Background.default',
+            bgcolor: 'background.default',
           }}
         >
           <Outlet />

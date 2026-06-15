@@ -1,6 +1,17 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
 const cmsTheme = createTheme({
+
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+            xxl: 1920,
+        },
+    },
 
     palette: {
         mode: 'dark',
@@ -12,7 +23,7 @@ const cmsTheme = createTheme({
             paper: '#171526',   // var(--cms-bg-sidebar) 
         },
         text: {
-            primary: '#FFFFFF', // var(--cms-text-main)
+            primary: '#fffff1', // var(--cms-text-main)
             secondary: '#A78BFA', // var(--cms-text-muted)
         },
         success: {
@@ -28,11 +39,11 @@ const cmsTheme = createTheme({
     shape: {
         borderRadius: 8,
     },
+
     typography: {
         fontFamily: '"Inter", "Geist Sans", sans-serif',
     },
     components: {
-
         MuiButton: {
             styleOverrides: {
                 root: {
@@ -43,4 +54,7 @@ const cmsTheme = createTheme({
         },
     },
 });
-export default cmsTheme;
+
+const theme = responsiveFontSizes(cmsTheme);
+
+export default theme;
