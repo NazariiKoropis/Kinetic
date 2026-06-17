@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
+import 'dotenv/config';
 import jwt from "jsonwebtoken";
-import 'dotenv/config'
 
 import generateToken from "#utils/generate-token.js";
 
-import User from "#models/User.js";
 import Session from "#models/Sessions.js";
+import User from "#models/User.js";
 
 const register = async (req, res) => {
     try {
@@ -53,7 +53,15 @@ const register = async (req, res) => {
             maxAge: refreshExpireTimeMs
         });
 
-        return res.status(201).json({ accessToken, id: newUser._id });
+        return res.status(201).json({
+            accessToken,
+            user: {
+                id: newUser._id,
+                name: newUser.name,
+                username: newUser.username,
+                role: newUser.role
+            }
+        });
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: "Error creating user", status: 'fail' })
@@ -94,7 +102,15 @@ const login = async (req, res) => {
             maxAge: refreshExpireTimeMs
         });
 
-        return res.status(200).json({ accessToken, id: user._id });
+        return res.status(200).json({
+            accessToken,
+            user: {
+                id: user._id,
+                name: user.name,
+                username: user.username,
+                role: user.role
+            }
+        });
 
     } catch (e) {
         console.error(e);
@@ -142,7 +158,21 @@ const refresh = async (req, res) => {
                 {
                     expiresIn: process.env.ACCESS_EXPIRE_TIME
                 });
-            res.json({ accessToken });
+
+            const user = await User.findById(decoded.id).select('name surname username role');
+            if (!user) {
+                return res.status(403).json({ error: 'User not found' });
+            }
+
+            res.json({
+                accessToken,
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    username: user.username,
+                    role: user.role
+                }
+            });
         });
 
     } catch (e) {
@@ -151,4 +181,5 @@ const refresh = async (req, res) => {
     }
 }
 
-export { register, login, logout, refresh };        
+export { login, logout, refresh, register };
+
