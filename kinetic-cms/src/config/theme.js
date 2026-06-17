@@ -23,7 +23,7 @@ const cmsTheme = createTheme({
             paper: '#171526',   // var(--cms-bg-sidebar) 
         },
         text: {
-            primary: '#fffff1', // var(--cms-text-main)
+            primary: '#ffffff', // var(--cms-text-main)
             secondary: '#A78BFA', // var(--cms-text-muted)
         },
         success: {

@@ -34,6 +34,12 @@ export default defineConfig(({ mode }) => ({
       // utils
       '@utils': path.resolve(__dirname, './src/utils'),
 
+      //schems for zod
+      '@schemas': path.resolve(__dirname, './src/schemas'),
+
+      //config
+      '@config': path.resolve(__dirname, './src/config'),
+
       // assets
       '@images': path.resolve(__dirname, './src/assets/images'),
     }
