@@ -13,6 +13,7 @@
 			"@utils/*": ["src/utils/*"],
 			"@config/*": ["src/config/*"],
 			"@schemas/*": ["src/schemas/*"],
+			"@routes/*": ["src/routes/*"],
 			"@images/*": ["src/assets/images/*"]
 		}
 	},

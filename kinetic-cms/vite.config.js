@@ -40,6 +40,9 @@ export default defineConfig(({ mode }) => ({
       //config
       '@config': path.resolve(__dirname, './src/config'),
 
+      //routes
+      '@routes': path.resolve(__dirname, './src/routes'),
+
       // assets
       '@images': path.resolve(__dirname, './src/assets/images'),
     }
