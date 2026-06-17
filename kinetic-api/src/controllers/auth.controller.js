@@ -123,7 +123,11 @@ const logout = async (req, res) => {
         const { refreshToken } = req.cookies;
         await Session.deleteOne({ token: refreshToken });
 
-        res.clearCookie('refreshToken');
+        res.clearCookie('refreshToken', {
+            sameSite: 'strict',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+        });
         res.json({ message: 'Session is closed' });
 
     } catch (e) {
@@ -136,7 +140,7 @@ const refresh = async (req, res) => {
     try {
         const { refreshToken } = req.cookies;
 
-        if (!refreshToken) return res.status(401).json({ error: 'Tokin is missing' });
+        if (!refreshToken) return res.status(401).json({ error: 'Token is missing' });
 
         const savedSession = await Session.findOne({ token: refreshToken });
 
@@ -144,36 +148,26 @@ const refresh = async (req, res) => {
             return res.status(403).json({ error: 'Session is not valid or closed' });
         }
 
-        jwt.verify(refreshToken, process.env.REFRESH_SECRET_KEY, async (err, decoded) => {
-            if (err) {
-                await Session.deleteOne({ _id: savedSession._id });
-                return res.status(403).json({ error: 'Token is not valid or closed' });
-            }
 
-            const accessToken = jwt.sign({
-                id: decoded.id,
-                role: decoded.role
-            },
-                process.env.ACCESS_SECRET_KEY,
-                {
-                    expiresIn: process.env.ACCESS_EXPIRE_TIME
-                });
+        try {
+            const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET_KEY);
 
             const user = await User.findById(decoded.id).select('name surname username role');
-            if (!user) {
-                return res.status(403).json({ error: 'User not found' });
-            }
+            if (!user) return res.status(403).json({ error: 'User not found' });
 
-            res.json({
-                accessToken,
-                user: {
-                    id: user._id,
-                    name: user.name,
-                    username: user.username,
-                    role: user.role
-                }
-            });
-        });
+            const accessToken = jwt.sign(
+                { id: decoded.id, role: decoded.role },
+                process.env.ACCESS_SECRET_KEY,
+                { expiresIn: process.env.ACCESS_EXPIRE_TIME }
+            );
+
+            return res.json({ accessToken, user: { id: user._id, name: user.name, username: user.username, role: user.role } });
+
+        } catch (err) {
+
+            await Session.deleteOne({ _id: savedSession._id });
+            return res.status(403).json({ error: 'Token is not valid or expired' });
+        }
 
     } catch (e) {
         console.error(e);
