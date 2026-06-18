@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 
 
-export const useAuthStore = create(
+const useAuthStore = create(
     (set) => ({
         user: null,
         token: null,
@@ -26,3 +26,5 @@ export const useAuthStore = create(
         setInitializing: (isInitializing) => set({ isInitializing }),
     })
 );
+
+export default useAuthStore;
