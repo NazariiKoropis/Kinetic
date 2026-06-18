@@ -1,12 +1,14 @@
 //libs
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import 'dotenv/config'
 import express from 'express'
 import helmet from 'helmet'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
-import 'dotenv/config'
 
 import authRouter from '#routes/auth.route.js'
+import movieRouter from '#routes/movies.route.js'
+import uploadRouter from '#routes/uploads.route.js'
 
 import connectDB from '#config/db.js'
 
@@ -39,5 +41,7 @@ app.get('/api/v1', (req, res) => {
 })
 
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/movies', movieRouter)
+app.use('/api/v1/uploads', uploadRouter)
 
 app.listen(port, host, () => console.log(`Server running at http://localhost:${port}/`))
