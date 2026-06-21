@@ -1,7 +1,8 @@
+import 'dotenv/config';
 import jwt from "jsonwebtoken";
-import 'dotenv/config'
 
-import { ROLES } from "#constants/ROLES";
+import { ROLES } from "#constants/ROLES.js";
+
 
 const checkAuth = async (req, res, next) => {
     let token;
@@ -21,7 +22,7 @@ const checkAuth = async (req, res, next) => {
 
         next();
     } catch (e) {
-        return res.status(401).json({ error: 'Invaid token', message: e.message, });
+        return res.status(401).json({ error: 'Invalid token', message: e.message, });
     }
 }
 
@@ -30,7 +31,7 @@ const checkRole = (req, res, next) => {
     try {
         if (!req.user) return res.status(401).json({ message: 'Unauthorized' })
 
-        if (req.user.role !== ROLES.ADMIN) return res.status(500).json({ message: 'Forbidden' })
+        if (req.user.role !== ROLES.ADMIN) return res.status(403).json({ message: 'Forbidden' })
 
         next()
     } catch (e) {
@@ -40,4 +41,4 @@ const checkRole = (req, res, next) => {
 }
 
 
-export default { checkAuth, checkRole };
+export { checkAuth, checkRole };

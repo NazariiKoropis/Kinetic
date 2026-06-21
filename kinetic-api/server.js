@@ -7,8 +7,8 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 
 import authRouter from '#routes/auth.route.js'
-import movieRouter from '#routes/movies.route.js'
-import uploadRouter from '#routes/uploads.route.js'
+import movieRouter from '#routes/movie.route.js'
+import uploadRouter from '#routes/upload.route.js'
 
 import connectDB from '#config/db.js'
 
@@ -41,7 +41,7 @@ app.get('/api/v1', (req, res) => {
 })
 
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/movies', movieRouter)
-app.use('/api/v1/uploads', uploadRouter)
+app.use('/api/v1/movie', movieRouter)
+app.use('/api/v1/upload', uploadRouter)
 
 app.listen(port, host, () => console.log(`Server running at http://localhost:${port}/`))

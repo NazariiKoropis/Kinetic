@@ -6,7 +6,7 @@ const connectDB = async () => {
     const uri = process.env.CONNECTION_URI;
 
     if (!uri) {
-        console.error("❌ КРИТИЧНА ПОМИЛКА: CONNECTION_URI не задано в .env файлі!");
+        console.error("❌ CRITICAL ERROR: CONNECTION_URI is not defined in the .env file!");
         process.exit(1);
     }
 
@@ -16,7 +16,7 @@ const connectDB = async () => {
 
         console.log(`🚀 MongoDB Connected: ${conn.connection.host}/${conn.connection.name}`);
     } catch (error) {
-        console.error("❌ Помилка підключення до MongoDB:", error.message);
+        console.error("❌ MongoDB connection error:", error.message);
 
         process.exit(1);
     }
