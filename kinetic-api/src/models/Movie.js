@@ -17,7 +17,7 @@ const subSchema = new mongoose.Schema({
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   originalTitle: { type: String, trim: true },
-  releaseDate: { type: Date, required: true },
+  releaseYear: { type: Number, required: true },
   duration: { type: Number, required: true },
   description: { type: String, required: true },
   director: { type: String, required: true },

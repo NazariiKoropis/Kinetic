@@ -1,8 +1,8 @@
-import express from "express";
-import validateBody from "#middlewares/validator.middleware.js";
+import { validateBody } from "#middlewares/validator.middleware.js";
 import { userLoginSchema, userRegisterSchema } from "#schemas/user.schema.js";
+import express from "express";
 
-import { register, login, logout, refresh } from "#controllers/auth.controller.js"
+import { login, logout, refresh, register } from "#controllers/auth.controller.js";
 
 const authRouter = express.Router();
 

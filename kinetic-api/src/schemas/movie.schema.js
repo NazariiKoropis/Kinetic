@@ -5,10 +5,10 @@ const movieCreateSchema = z.object({
   title: z.string().min(2, 'Title must be at least 2 characters'),
   originalTitle: z.string().optional(),
 
-  releaseDate: z.coerce.date({
-    required_error: "Release date is required",
-    invalid_type_error: "Invalid date format"
-  }),
+  releaseYear: z.coerce.number()
+    .int('The year must be an integer')
+    .min(1888, 'The year must be at least 1888')
+    .max(new Date().getFullYear() + 5, 'A year too far in the future'),
 
   duration: z.coerce.number().min(1, 'Duration must be at least 1 minute'),
 
@@ -32,7 +32,8 @@ const movieCreateSchema = z.object({
   sub: z.array(
     z.object({
       lang: z.string().min(2, 'Language of subtitles must be specified'),
-      url: z.string().min(1, 'Subtitle URL is required')
+      url: z.string().min(1, 'Subtitle URL is required'),
+      voiceOver: z.string().optional()
     })
   ).optional(),
 
@@ -49,8 +50,39 @@ const movieCreateSchema = z.object({
   })
 });
 
+const movieFilterSchema = z.object({
+  title: z.string().optional(),
+
+
+  genres: z.string().optional(),
+
+  status: z.enum(MOVIE_STATUSES, {
+    invalid_type_error: 'Invalid status'
+  }).optional(),
+
+  releaseYear: z.coerce.number()
+    .int('The year must be an integer')
+    .min(1888, 'The year must be at least 1888')
+    .max(new Date().getFullYear() + 5, 'A year too far in the future')
+    .optional(),
+
+  duration: z.coerce.number().optional(),
+
+  ratingMPAA: z.enum(MPAA_RATINGS, {
+    invalid_type_error: 'Invalid MPAA rating'
+  }).optional(),
+
+  director: z.string().optional(),
+
+
+  page: z.coerce.number().min(1).optional(),
+  limit: z.coerce.number().min(1).max(100).optional(),
+
+  sortBy: z.string().optional(),
+  sortOrder: z.string().optional(),
+});
 
 const movieUpdateSchema = movieCreateSchema.partial();
 
-export { movieCreateSchema, movieUpdateSchema };
+export { movieCreateSchema, movieFilterSchema, movieUpdateSchema };
 

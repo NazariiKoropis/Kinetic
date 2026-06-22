@@ -12,6 +12,8 @@ import uploadRouter from '#routes/upload.route.js'
 
 import connectDB from '#config/db.js'
 
+import adminRouter from "#routes/admin/index.js"
+
 connectDB();
 
 const allowedCors = {
@@ -43,5 +45,7 @@ app.get('/api/v1', (req, res) => {
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/movie', movieRouter)
 app.use('/api/v1/upload', uploadRouter)
+
+app.use('/api/v1/admin', adminRouter)
 
 app.listen(port, host, () => console.log(`Server running at http://localhost:${port}/`))

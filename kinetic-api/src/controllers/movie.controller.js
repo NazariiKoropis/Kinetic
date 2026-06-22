@@ -1,6 +1,7 @@
 import Movie from '#models/Movie.js';
 import moveTempFile from "#utils/move-temp-files.js";
 
+//TODO: refactor method, mb add body parser
 const createMovie = async (req, res) => {
   try {
     const body = req.body;
@@ -46,7 +47,52 @@ const createMovie = async (req, res) => {
   }
 };
 
+const getMovies = async (req, res) => {
+  try {
+    const { filter, sort, skip, limit, page } = req.mongoQuery;
 
+    const [movies, totalMovies] = await Promise.all([
+      Movie.find(filter)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit),
+      Movie.countDocuments(filter)
+    ]);
 
-export { createMovie };
+    res.status(200).json({
+      success: true,
+      data: movies,
+      pagination: {
+        totalItems: totalMovies,
+        totalPages: Math.ceil(totalMovies / limit),
+        currentPage: page,
+        itemsPerPage: limit
+      }
+    });
+
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error getting movies', error: e.message });
+  }
+};
+
+const getMovieById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const movie = await Movie.findById(id)
+
+    if (!movie) {
+      res.status(404).json({ message: 'Movie didnt found' })
+    }
+
+    res.status(200).json(movie)
+  }
+  catch (e) {
+    console.error(e)
+    res.status(500).json({ message: 'Error getting movie', error: e.message });
+  }
+}
+
+export { createMovie, getMovieById, getMovies };
 
