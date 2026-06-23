@@ -132,7 +132,7 @@ const logout = async (req, res) => {
 
     } catch (e) {
         console.error(e);
-        res.status(500).json({ message: "Error logout out", status: 'fail' })
+        res.status(500).json({ message: "Error logging out", status: 'fail' })
     }
 }
 
@@ -171,7 +171,7 @@ const refresh = async (req, res) => {
 
     } catch (e) {
         console.error(e);
-        res.status(500).json({ message: "Error refresh", status: 'fail' })
+        res.status(500).json({ message: "Error refreshing token", status: 'fail' })
     }
 }
 
