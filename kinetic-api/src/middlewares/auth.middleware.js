@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import jwt from "jsonwebtoken"
 
-import { ROLES } from "#constants/ROLES.js"
+import ROLES from "#constants/roles.js"
 
 
 const checkAuth = async (req, res, next) => {
