@@ -1,5 +1,5 @@
-import { MOVIE_STATUSES, MPAA_RATINGS } from '#constants/movie.js';
-import * as z from 'zod';
+import { MOVIE_STATUSES, MPAA_RATINGS } from '#constants/movie.js'
+import * as z from 'zod'
 
 const movieCreateSchema = z.object({
   title: z.string().min(2, 'Title must be at least 2 characters'),
@@ -11,6 +11,8 @@ const movieCreateSchema = z.object({
     .max(new Date().getFullYear() + 5, 'A year too far in the future'),
 
   duration: z.coerce.number().min(1, 'Duration must be at least 1 minute'),
+  trailer: z.string({ required_error: 'Trailer is required' }).min(1, 'Trailer is required'),
+  studios: z.array(z.string().min(2, 'Studio name must be at least 2 characters')).min(1, 'At least one studio is required'),
 
   description: z.string().min(10, 'Description must be at least 10 characters'),
   director: z.string().min(2, 'Director name must be at least 2 characters'),
@@ -48,12 +50,10 @@ const movieCreateSchema = z.object({
     required_error: 'MPAA rating is required',
     invalid_type_error: 'Invalid MPAA rating'
   })
-});
+})
 
 const movieFilterSchema = z.object({
   title: z.string().optional(),
-
-
   genres: z.string().optional(),
 
   status: z.enum(MOVIE_STATUSES, {
@@ -67,6 +67,7 @@ const movieFilterSchema = z.object({
     .optional(),
 
   duration: z.coerce.number().optional(),
+  studios: z.array(z.string()).optional(),
 
   ratingMPAA: z.enum(MPAA_RATINGS, {
     invalid_type_error: 'Invalid MPAA rating'
@@ -80,9 +81,12 @@ const movieFilterSchema = z.object({
 
   sortBy: z.string().optional(),
   sortOrder: z.string().optional(),
-});
+})
 
-const movieUpdateSchema = movieCreateSchema.partial();
+const statusUpdateSchema = z.object({
+  status: z.enum(MOVIE_STATUSES, { required_error: 'Status is required' })
+})
 
-export { movieCreateSchema, movieFilterSchema, movieUpdateSchema };
+const movieUpdateSchema = movieCreateSchema.partial()
 
+export { movieCreateSchema, movieFilterSchema, movieUpdateSchema, statusUpdateSchema }

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const userSchema = new mongoose.Schema({
 
@@ -65,6 +65,14 @@ const userSchema = new mongoose.Schema({
         default: []
     },
 
+    dislikedMovies: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Movie'
+        }],
+        default: []
+    },
+
     savedMovies: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
@@ -79,6 +87,6 @@ const userSchema = new mongoose.Schema({
     },
 })
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema)
 
-export default User;
+export default User

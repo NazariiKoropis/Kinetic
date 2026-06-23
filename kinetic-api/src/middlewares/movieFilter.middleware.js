@@ -1,29 +1,29 @@
 const buildMovieFilter = (req, res, next) => {
 
 	const {
-		title, genres, status, releaseYear, duration, ratingMPAA, rating,
+		title, genres, status, studios, releaseYear, duration, ratingMPAA, rating,
 		page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc'
-	} = req.validatedQuery;
+	} = req.validatedQuery
 
-	const filter = {};
+	const filter = {}
 
 	if (title) {
 		filter.$or = [
 			{ title: { $regex: title, $options: 'i' } },
 			{ originalTitle: { $regex: title, $options: 'i' } }
-		];
+		]
 	}
+	if (studios) filter.studios = { $in: studios.split(',') }
+	if (genres) filter.genres = { $in: genres.split(',') }
+	if (releaseYear) filter.releaseYear = releaseYear
+	if (status) filter.status = status
+	if (duration) filter.duration = { $gte: duration }
+	if (ratingMPAA) filter.ratingMPAA = ratingMPAA
+	if (rating) filter.rating = { $gte: rating }
 
-	if (genres) filter.genres = { $in: genres.split(',') };
-	if (releaseYear) filter.releaseYear = releaseYear;
-	if (status) filter.status = status;
-	if (duration) filter.duration = { $gte: duration };
-	if (ratingMPAA) filter.ratingMPAA = ratingMPAA;
-	if (rating) filter.rating = { $gte: rating };
 
-
-	const skip = (page - 1) * limit;
-	const order = sortOrder === 'desc' ? -1 : 1;
+	const skip = (page - 1) * limit
+	const order = sortOrder === 'desc' ? -1 : 1
 
 
 	req.mongoQuery = {
@@ -32,8 +32,8 @@ const buildMovieFilter = (req, res, next) => {
 		skip,
 		limit,
 		page,
-	};
+	}
 
-	next();
-};
+	next()
+}
 export default buildMovieFilter
