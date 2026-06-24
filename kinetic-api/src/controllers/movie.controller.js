@@ -59,11 +59,11 @@ const createMovie = async (req, res) => {
 
     await newMovie.save()
 
-    res.status(201).json({ message: 'Movie created successfully!', movie: newMovie })
+    res.status(201).json({ success: true, message: 'Movie created successfully!', movie: newMovie })
 
   } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error creating movie', error: e.message })
+    res.status(500).json({ success: false, message: 'Error creating movie', error: e.message })
   }
 }
 
@@ -93,7 +93,7 @@ const getMovies = async (req, res) => {
 
   } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error getting movies', error: e.message })
+    res.status(500).json({ success: false, message: 'Error getting movies', error: e.message })
   }
 }
 
@@ -104,14 +104,24 @@ const getMovieById = async (req, res) => {
     const movie = await Movie.findById(id)
 
     if (!movie) {
-      return res.status(404).json({ message: 'Movie not found' })
+      return res.status(404).json({
+        success: false,
+        message: 'Movie not found'
+      })
     }
 
-    res.status(200).json({ success: true, data: movie })
-  }
-  catch (e) {
+    res.status(200).json({
+      success: true,
+      data: movie
+    })
+
+  } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error getting movie', error: e.message })
+    res.status(500).json({
+      success: false,
+      message: 'Error getting movie',
+      error: e.message
+    })
   }
 }
 
@@ -122,7 +132,7 @@ const updateMovie = async (req, res) => {
 
     const oldMovie = await Movie.findById(id)
     if (!oldMovie)
-      return res.status(404).json({ message: 'Movie didnt found' })
+      return res.status(404).json({ success: false, message: 'Movie didnt found' })
 
     const oldFiles = [
       oldMovie.poster,
@@ -181,13 +191,14 @@ const updateMovie = async (req, res) => {
     }
 
     res.status(200).json({
+      success: true,
       message: 'Movie updated successfully!',
       data: oldMovie
     })
 
   } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error updating movie', error: e.message })
+    res.status(500).json({ success: false, message: 'Error updating movie', error: e.message })
   }
 }
 
@@ -197,7 +208,7 @@ const deleteMovieById = async (req, res) => {
 
     const movie = await Movie.findById(id)
     if (!movie) {
-      return res.status(404).json({ message: 'Movie not found' })
+      return res.status(404).json({ success: false, message: 'Movie not found' })
     }
 
     const folderPath = path.resolve(process.cwd(), 'uploads', UPLOAD_FOLDERS.MOVIE, id)
@@ -214,7 +225,7 @@ const deleteMovieById = async (req, res) => {
 
   } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error deleting movie', error: e.message })
+    res.status(500).json({ success: false, message: 'Error deleting movie', error: e.message })
   }
 }
 
@@ -229,7 +240,7 @@ const toggleLikeMovie = async (req, res) => {
     ])
 
     if (!movie || !user) {
-      return res.status(404).json({ message: 'No movie or user found' })
+      return res.status(404).json({ success: false, message: 'No movie or user found' })
     }
 
     const isLiked = user.likedMovies.some(mId => mId.toString() === id)
@@ -264,7 +275,7 @@ const toggleLikeMovie = async (req, res) => {
 
   } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error while handling like', error: e.message })
+    res.status(500).json({ success: false, message: 'Error while handling like', error: e.message })
   }
 }
 
@@ -279,7 +290,7 @@ const toggleDislikeMovie = async (req, res) => {
     ])
 
     if (!movie || !user) {
-      return res.status(404).json({ message: 'No movie or user found' })
+      return res.status(404).json({ success: false, message: 'No movie or user found' })
     }
 
     const isLiked = user.likedMovies.some(mId => mId.toString() === id)
@@ -314,7 +325,11 @@ const toggleDislikeMovie = async (req, res) => {
 
   } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error while handling dislike', error: e.message })
+    res.status(500).json({
+      success: false,
+      message: 'Error while handling dislike',
+      error: e.message
+    })
   }
 }
 
@@ -322,15 +337,14 @@ const addView = async (req, res) => {
   try {
     const { id } = req.params
 
-    const movie = await Movie.findByIdAndUpdate(id,
-      {
-        $inc: { views: 1 }
-      },
+    const movie = await Movie.findByIdAndUpdate(id, {
+      $inc: { views: 1 }
+    },
       { new: true }
     )
 
     if (!movie) {
-      return res.status(404).json({ message: 'Movie not found' })
+      return res.status(404).json({ success: false, message: 'Movie not found' })
     }
 
     res.status(200).json({
@@ -340,6 +354,7 @@ const addView = async (req, res) => {
   } catch (e) {
     console.error(e)
     res.status(500).json({
+      success: false,
       message: 'Error while adding view',
       error: e.message
     })
@@ -354,7 +369,7 @@ const updateStatus = async (req, res) => {
     const movie = await Movie.findByIdAndUpdate(id, { status })
 
     if (!movie) {
-      return res.status(404).json({ message: 'Movie not found' })
+      return res.status(404).json({ success: false, message: 'Movie not found' })
     }
 
     res.status(200).json({
@@ -364,6 +379,7 @@ const updateStatus = async (req, res) => {
   } catch (e) {
     console.error(e)
     res.status(500).json({
+      success: false,
       message: 'Error while updating status',
       error: e.message
     })
@@ -376,7 +392,7 @@ const getRelatedMovies = async (req, res) => {
 
     const movie = await Movie.findById(id)
     if (!movie) {
-      return res.status(404).json({ message: 'Movie not found' })
+      return res.status(404).json({ success: false, message: 'Movie not found' })
     }
 
     const relatedMovies = await Movie.find({
@@ -397,7 +413,7 @@ const getRelatedMovies = async (req, res) => {
 
   } catch (e) {
     console.error(e)
-    res.status(500).json({ message: 'Error while getting related movies', error: e.message })
+    res.status(500).json({ success: false, message: 'Error while getting related movies', error: e.message })
   }
 }
 
@@ -422,6 +438,7 @@ const getMovieForSearch = async (req, res) => {
   } catch (e) {
     console.error(e)
     res.status(500).json({
+      success: false,
       message: 'Error while getting movies',
       error: e.message
     })

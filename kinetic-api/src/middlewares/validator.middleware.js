@@ -9,7 +9,7 @@ const validateBody = (schema) => (req, res, next) => {
         }));
 
         return res.status(400).json({
-            status: 'fail',
+            success: false,
             errors: formattedErrors
         });
     }
@@ -29,7 +29,7 @@ const validateQuery = (schema) => (req, res, next) => {
         }));
 
         return res.status(400).json({
-            status: 'fail',
+            success: false,
             errors: formattedErrors
         });
     }
