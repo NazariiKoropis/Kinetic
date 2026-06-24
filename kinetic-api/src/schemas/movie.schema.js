@@ -17,8 +17,11 @@ const movieCreateSchema = z.object({
   description: z.string().min(10, 'Description must be at least 10 characters'),
   director: z.string().min(2, 'Director name must be at least 2 characters'),
 
-  genres: z.array(z.string().min(2, 'Genre must be at least 2 characters'))
+  genres: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid Genre ID'))
     .min(1, 'At least one genre is required'),
+
+  countries: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid Country ID'))
+    .min(1, 'At least one country is required'),
 
   poster: z.string({ required_error: 'Poster is required' }).min(1, 'Poster is required'),
   video: z.string({ required_error: 'Video is required' }).min(1, 'Video is required'),
@@ -55,6 +58,7 @@ const movieCreateSchema = z.object({
 const movieFilterSchema = z.object({
   title: z.string().optional(),
   genres: z.string().optional(),
+  countries: z.string().optional(),
 
   status: z.enum(MOVIE_STATUSES, {
     invalid_type_error: 'Invalid status'
