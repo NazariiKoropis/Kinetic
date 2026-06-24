@@ -1,7 +1,7 @@
 const buildMovieFilter = (req, res, next) => {
 
 	const {
-		title, genres, status, studios, releaseYear, duration, ratingMPAA, rating,
+		title, genres, countries, status, studios, releaseYear, duration, ratingMPAA, rating,
 		page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc'
 	} = req.validatedQuery
 
@@ -15,6 +15,7 @@ const buildMovieFilter = (req, res, next) => {
 	}
 	if (studios) filter.studios = { $in: studios.split(',') }
 	if (genres) filter.genres = { $in: genres.split(',') }
+	if (countries) filter.countries = { $in: countries.split(',') }
 	if (releaseYear) filter.releaseYear = releaseYear
 	if (status) filter.status = status
 	if (duration) filter.duration = { $gte: duration }

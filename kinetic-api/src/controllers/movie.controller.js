@@ -16,6 +16,7 @@ const createMovie = async (req, res) => {
       description,
       director,
       genres,
+      countries,
       poster,
       video,
       audio,
@@ -26,7 +27,7 @@ const createMovie = async (req, res) => {
       studios,
       trailer } = req.body
 
-    const newMovie = new Movie({ title, originalTitle, releaseYear, duration, description, director, genres, poster, video, audio, sub, images, status, ratingMPAA, studios, trailer })
+    const newMovie = new Movie({ title, originalTitle, releaseYear, duration, description, director, genres, countries, poster, video, audio, sub, images, status, ratingMPAA, studios, trailer })
 
     const movieId = newMovie._id.toString()
 
@@ -73,7 +74,9 @@ const getMovies = async (req, res) => {
 
     const [movies, totalMovies] = await Promise.all([
       Movie.find(filter)
-        .select('title poster releaseYear genres rating ratingMPAA duration status likesCount dislikesCount')
+        .select('title poster releaseYear genres countries rating ratingMPAA duration status likesCount dislikesCount')
+        .populate('genres')
+        .populate('countries')
         .sort(sort)
         .skip(skip)
         .limit(limit),
@@ -102,6 +105,8 @@ const getMovieById = async (req, res) => {
     const { id } = req.params
 
     const movie = await Movie.findById(id)
+      .populate('genres')
+      .populate('countries')
 
     if (!movie) {
       return res.status(404).json({ message: 'Movie not found' })
@@ -387,7 +392,9 @@ const getRelatedMovies = async (req, res) => {
         { director: movie.director }
       ]
     })
-      .select('title poster releaseYear genres rating ratingMPAA duration status likesCount dislikesCount')
+      .select('title poster releaseYear genres countries rating ratingMPAA duration status likesCount dislikesCount')
+      .populate('genres')
+      .populate('countries')
       .limit(6)
 
     res.status(200).json({

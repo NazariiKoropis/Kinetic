@@ -7,6 +7,8 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 
 import authRouter from '#routes/auth.route.js'
+import countryRouter from '#routes/country.route.js'
+import genreRouter from '#routes/genre.route.js'
 import movieRouter from '#routes/movie.route.js'
 import uploadRouter from '#routes/upload.route.js'
 
@@ -45,6 +47,8 @@ app.get('/api/v1', (req, res) => {
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/movie', movieRouter)
 app.use('/api/v1/upload', uploadRouter)
+app.use('/api/v1/genre', genreRouter)
+app.use('/api/v1/country', countryRouter)
 
 app.use('/api/v1/admin', adminRouter)
 
