@@ -2,7 +2,6 @@ import Layout from '@layout/Layout'
 import ChangeHistory from '@pages/change-history'
 
 import Dashboard from '@pages/dashboard'
-import Films from '@pages/films'
 
 import Login from '@pages/login'
 import People from '@pages/people'
@@ -12,6 +11,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { useRefreshUser } from '@hooks/useRefresh'
 import Loader from '@layout/Loader'
 import ProtectedRoute from '@routes/ProtectedRoute'
+import Movies from './pages/movies'
 
 function App() {
 	const isInitializing = useRefreshUser()
@@ -38,8 +38,8 @@ function App() {
 						element={<People />}
 					/>
 					<Route
-						path="/films"
-						element={<Films />}
+						path="/movies"
+						element={<Movies />}
 					/>
 					<Route
 						path="/reports"
