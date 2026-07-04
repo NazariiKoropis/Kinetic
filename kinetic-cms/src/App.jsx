@@ -1,53 +1,23 @@
-//libs
 import Layout from '@layout/Layout'
 import ChangeHistory from '@pages/change-history'
-//protected
+
 import Dashboard from '@pages/dashboard'
-import Films from '@pages/films'
-//pages public
-import { Box, CircularProgress } from '@mui/material'
+
 import Login from '@pages/login'
 import People from '@pages/people'
 import Reports from '@pages/reports'
-import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-//components
-import { refreshUser } from '@api/auth'
-import { useAuthStore } from '@store/authStore'
-import ProtectedRoute from './routes/ProtectedRoute'
+import { useRefreshUser } from '@hooks/useRefresh'
+import Loader from '@layout/Loader'
+import ProtectedRoute from '@routes/ProtectedRoute'
+import Movies from './pages/movies'
 
 function App() {
-	const login = useAuthStore(state => state.login)
-	const logout = useAuthStore(state => state.logout)
-	const isInitializing = useAuthStore(state => state.isInitializing)
-
-	useEffect(() => {
-		const bootstrapAuth = async () => {
-			try {
-				const res = await refreshUser()
-				login(res.user, res.accessToken)
-			} catch (e) {
-				logout()
-			}
-		}
-		bootstrapAuth()
-	}, [login, logout])
+	const isInitializing = useRefreshUser()
 
 	if (isInitializing) {
-		return (
-			<Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					minHeight: '100vh',
-					bgcolor: 'background.default'
-				}}
-			>
-				<CircularProgress />
-			</Box>
-		)
+		return <Loader />
 	}
 
 	return (
@@ -68,8 +38,8 @@ function App() {
 						element={<People />}
 					/>
 					<Route
-						path="/films"
-						element={<Films />}
+						path="/movies"
+						element={<Movies />}
 					/>
 					<Route
 						path="/reports"

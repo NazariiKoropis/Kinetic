@@ -16,7 +16,7 @@ import {
 	ListItemText,
 	Typography
 } from '@mui/material'
-import { useAuthStore } from '@store/authStore'
+import useAuthStore from '@store/authStore'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 

@@ -1,9 +1,8 @@
-import { useAuthStore } from '@store/authStore';
+import useAuthStore from '@store/authStore';
 import axios from 'axios';
 
 const BASE_URL = '/api/v1';
-
-export const publicApi = axios.create({
+const publicApi = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -11,7 +10,7 @@ export const publicApi = axios.create({
 });
 
 
-export const privateApi = axios.create({
+const privateApi = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -54,3 +53,6 @@ privateApi.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export { privateApi, publicApi };
+

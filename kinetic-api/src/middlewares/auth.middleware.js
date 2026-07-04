@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import jwt from "jsonwebtoken"
 
-import { ROLES } from "#constants/ROLES.js"
+import ROLES from "#constants/roles.js"
 
 
 const checkAuth = async (req, res, next) => {
@@ -13,7 +13,8 @@ const checkAuth = async (req, res, next) => {
 
     if (!token) {
         return res.status(401).json({
-            error: 'You are not authorized'
+            success: false,
+            message: 'You are not authorized'
         })
     }
 
@@ -25,8 +26,9 @@ const checkAuth = async (req, res, next) => {
         next()
     } catch (e) {
         return res.status(401).json({
-            error: 'Invalid token',
-            message: e.message,
+            success: false,
+            message: 'Invalid token',
+            error: e.message,
         })
     }
 }
@@ -34,16 +36,17 @@ const checkAuth = async (req, res, next) => {
 
 const checkRole = (req, res, next) => {
     try {
-        if (!req.user) return res.status(401).json({ message: 'Unauthorized' })
+        if (!req.user) return res.status(401).json({ success: false, message: 'Unauthorized' })
 
         if (req.user.role !== ROLES.ADMIN) return res.status(403).json({
+            success: false,
             message: 'Forbidden'
         })
 
         next()
     } catch (e) {
         console.error('Auth Middleware Error:', e)
-        return res.status(500).json({ message: 'Internal Server Error' })
+        return res.status(500).json({ success: false, message: 'Internal Server Error' })
     }
 }
 

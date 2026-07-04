@@ -1,13 +1,8 @@
-<<<<<<< Updated upstream
-
-const MOVIE_STATUSES = ['released', 'upcoming', 'hidden']
-=======
 const MOVIE_STATUSES = {
   RELEASED: 'released',
   UPCOMING: 'upcoming',
   HIDDEN: 'hidden'
 }
->>>>>>> Stashed changes
 
 const MPAA_RATINGS = {
   G: 'G',
