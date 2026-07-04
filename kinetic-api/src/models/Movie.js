@@ -36,13 +36,13 @@ const movieSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: MOVIE_STATUSES,
-    default: 'released'
+    enum: Object.values(MOVIE_STATUSES),
+    default: MOVIE_STATUSES.RELEASED
   },
   ratingMPAA: {
     type: String,
-    enum: MPAA_RATINGS,
-    default: 'NR'
+    enum: Object.values(MPAA_RATINGS),
+    default: MPAA_RATINGS.NR
   },
 
   poster: { type: String, required: true },

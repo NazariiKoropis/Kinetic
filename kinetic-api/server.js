@@ -46,10 +46,11 @@ app.get('/api/v1', (req, res) => {
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/movie', movieRouter)
-app.use('/api/v1/upload', uploadRouter)
 app.use('/api/v1/genre', genreRouter)
 app.use('/api/v1/country', countryRouter)
 
 app.use('/api/v1/admin', adminRouter)
+
+app.use('/api/v1/upload', uploadRouter)
 
 app.listen(port, host, () => console.log(`Server running at http://localhost:${port}/`))

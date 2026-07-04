@@ -142,7 +142,6 @@ function SideBar() {
 										justifyContent: 'center'
 									},
 									'&.active': {
-										backgroundColor: 'rgba(124, 58, 237, 0.15)',
 										color: 'var(--cms-text-main)',
 										borderLeft: isOpen
 											? '4px solid var(--cms-primary)'
@@ -165,9 +164,11 @@ function SideBar() {
 								{isOpen && (
 									<ListItemText
 										primary={title}
-										primaryTypographyProps={{
-											fontWeight: 500,
-											fontSize: '0.95rem'
+										slotProps={{
+											primary: {
+												fontWeight: 500,
+												fontSize: '0.95rem'
+											}
 										}}
 									/>
 								)}

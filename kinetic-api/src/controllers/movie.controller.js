@@ -386,7 +386,7 @@ const getRelatedMovies = async (req, res) => {
 
     const relatedMovies = await Movie.find({
       _id: { $ne: id },
-      status: { $in: [MOVIE_STATUSES[0], MOVIE_STATUSES[1]] },
+      status: { $in: [MOVIE_STATUSES.RELEASED, MOVIE_STATUSES.UPCOMING] },
       $or: [
         { genres: { $in: movie.genres } },
         { director: movie.director }
@@ -418,7 +418,7 @@ const getMovieForSearch = async (req, res) => {
 
     const movies = await Movie.find({
       title: { $regex: title, $options: 'i' },
-      status: { $in: [MOVIE_STATUSES[0], MOVIE_STATUSES[1]] },
+      status: { $in: [MOVIE_STATUSES.RELEASED, MOVIE_STATUSES.UPCOMING] },
     }).select('_id title poster').limit(5)
 
     res.status(200).json({
@@ -435,11 +435,39 @@ const getMovieForSearch = async (req, res) => {
   }
 }
 
+const getDashboardStats = async (req, res) => {
+  try {
+
+    const [total, released, soon, hidden] = await Promise.all([
+      Movie.countDocuments(),
+      Movie.countDocuments({ status: MOVIE_STATUSES.RELEASED }),
+      Movie.countDocuments({ status: MOVIE_STATUSES.UPCOMING }),
+      Movie.countDocuments({ status: MOVIE_STATUSES.HIDDEN })
+    ])
+
+    res.status(200).json({
+      success: true,
+      data: {
+        total,
+        released,
+        soon,
+        hidden
+      }
+    })
+
+  } catch (e) {
+    res.status(500).json({
+      success: false,
+      message: 'Error while getting dashboard stats',
+      error: e.message
+    })
+  }
+}
+
 export {
   addView,
   createMovie,
-  deleteMovieById,
-  getMovieById,
+  deleteMovieById, getDashboardStats, getMovieById,
   getMovieForSearch,
   getMovies,
   getRelatedMovies,

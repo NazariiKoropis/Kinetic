@@ -44,12 +44,12 @@ const movieCreateSchema = z.object({
 
   images: z.array(z.string()).optional(),
 
-  status: z.enum(MOVIE_STATUSES, {
+  status: z.enum(Object.values(MOVIE_STATUSES), {
     required_error: 'Status is required',
     invalid_type_error: 'Invalid status'
   }),
 
-  ratingMPAA: z.enum(MPAA_RATINGS, {
+  ratingMPAA: z.enum(Object.values(MPAA_RATINGS), {
     required_error: 'MPAA rating is required',
     invalid_type_error: 'Invalid MPAA rating'
   })
@@ -60,7 +60,7 @@ const movieFilterSchema = z.object({
   genres: z.string().optional(),
   countries: z.string().optional(),
 
-  status: z.enum(MOVIE_STATUSES, {
+  status: z.enum(Object.values(MOVIE_STATUSES), {
     invalid_type_error: 'Invalid status'
   }).optional(),
 
@@ -73,7 +73,7 @@ const movieFilterSchema = z.object({
   duration: z.coerce.number().optional(),
   studios: z.array(z.string()).optional(),
 
-  ratingMPAA: z.enum(MPAA_RATINGS, {
+  ratingMPAA: z.enum(Object.values(MPAA_RATINGS), {
     invalid_type_error: 'Invalid MPAA rating'
   }).optional(),
 
@@ -88,7 +88,7 @@ const movieFilterSchema = z.object({
 })
 
 const statusUpdateSchema = z.object({
-  status: z.enum(MOVIE_STATUSES, { required_error: 'Status is required' })
+  status: z.enum(Object.values(MOVIE_STATUSES), { required_error: 'Status is required' })
 })
 
 const movieUpdateSchema = movieCreateSchema.partial()
