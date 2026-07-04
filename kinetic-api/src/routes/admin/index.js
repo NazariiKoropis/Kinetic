@@ -12,5 +12,4 @@ adminRouter.use('/movie', movieAdminRoutes)
 adminRouter.use('/genre', genreAdminRoutes)
 adminRouter.use('/country', countryAdminRoutes)
 
-
 export default adminRouter

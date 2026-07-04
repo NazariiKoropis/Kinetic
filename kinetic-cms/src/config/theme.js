@@ -1,4 +1,4 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 
 const cmsTheme = createTheme({
 
@@ -20,7 +20,7 @@ const cmsTheme = createTheme({
         },
         background: {
             default: '#12101C', // var(--cms-bg-main)
-            paper: '#171526',   // var(--cms-bg-sidebar) 
+            paper: '#171526',   // var(--cms-bg-sidebar)
         },
         text: {
             primary: '#ffffff', // var(--cms-text-main)
@@ -53,8 +53,8 @@ const cmsTheme = createTheme({
             },
         },
     },
-});
+})
 
-const theme = responsiveFontSizes(cmsTheme);
+const theme = responsiveFontSizes(cmsTheme)
 
-export default theme;
+export default theme
