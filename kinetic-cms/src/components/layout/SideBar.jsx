@@ -30,6 +30,7 @@ function SideBar() {
 	const handleLogout = () => {
 		logOutUser().finally(() => {
 			logout()
+			navigate('/login')
 		})
 	}
 
