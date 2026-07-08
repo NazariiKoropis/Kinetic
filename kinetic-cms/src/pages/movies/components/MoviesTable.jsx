@@ -10,6 +10,7 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	Tooltip,
 	Typography
 } from '@mui/material'
 
@@ -107,8 +108,8 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 									<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
 										{movie.genres?.map(genre => (
 											<Chip
-												key={genre}
-												label={genre}
+												key={genre._id}
+												label={genre.name}
 												size="small"
 												variant="outlined"
 											/>
@@ -153,27 +154,33 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 											gap: 0.5
 										}}
 									>
-										<IconButton
-											size="small"
-											onClick={() => onPreview(movie._id)}
-											color="info"
-										>
-											<PreviewIcon fontSize="small" />
-										</IconButton>
-										<IconButton
-											size="small"
-											onClick={() => onEdit(movie._id)}
-											color="primary"
-										>
-											<EditIcon fontSize="small" />
-										</IconButton>
-										<IconButton
-											size="small"
-											onClick={() => onDelete(movie._id)}
-											color="error"
-										>
-											<DeleteIcon fontSize="small" />
-										</IconButton>
+										<Tooltip title="Попередній перегляд">
+											<IconButton
+												size="small"
+												onClick={() => onPreview(movie._id)}
+												color="info"
+											>
+												<PreviewIcon fontSize="small" />
+											</IconButton>
+										</Tooltip>
+										<Tooltip title="Редагувати">
+											<IconButton
+												size="small"
+												onClick={() => onEdit(movie._id)}
+												color="primary"
+											>
+												<EditIcon fontSize="small" />
+											</IconButton>
+										</Tooltip>
+										<Tooltip title="Видалити">
+											<IconButton
+												size="small"
+												onClick={() => onDelete(movie._id)}
+												color="error"
+											>
+												<DeleteIcon fontSize="small" />
+											</IconButton>
+										</Tooltip>
 									</Box>
 								</TableCell>
 							</TableRow>

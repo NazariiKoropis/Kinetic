@@ -59,6 +59,10 @@ export default defineConfig(({ mode }) => ({
       '/api': {
         target: 'http://kinetic-api:5000',
         changeOrigin: true,
+      },
+      '/uploads': {
+        target: 'http://kinetic-api:5000',
+        changeOrigin: true,
       }
     }
   }
