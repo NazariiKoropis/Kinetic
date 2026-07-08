@@ -1,13 +1,15 @@
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Button, Typography } from '@mui/material'
 import { useState } from 'react'
+import MoviesGrid from './components/MoviesGrid'
 import MoviesStatsOverview from './components/MoviesStatsOverview'
+import MoviesTable from './components/MoviesTable'
 import MoviesToolbar from './components/MoviesToolbar'
 
 function Movies() {
 	const [genre, setGenre] = useState([])
 
-	const [viewMode, setViewMode] = useState('grid')
+	const [viewMode, setViewMode] = useState('table')
 
 	return (
 		<Box
@@ -49,8 +51,8 @@ function Movies() {
 				onViewModeChange={setViewMode}
 				viewMode={viewMode}
 			/>
-			{/* 3. Блок таблиці/карточок (зробимо пізніше) */}
-			{/* <MoviesTable /> */}
+
+			{viewMode === 'table' ? <MoviesTable movies={[]} /> : <MoviesGrid />}
 		</Box>
 	)
 }
