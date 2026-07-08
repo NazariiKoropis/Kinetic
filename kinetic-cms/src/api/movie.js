@@ -6,10 +6,9 @@ const getMoviesStats = async () => {
 	return response.data
 }
 
-
 //public
 const getMovies = async (params) => {
-	const response = await publicApi.get('/movie', { params })
+	const response = await publicApi.get('/movie', params)
 	return response.data
 }
 
@@ -18,4 +17,4 @@ const getGenreList = async () => {
 	return response.data
 }
 
-export { getGenreList, getMoviesStats }
+export { getGenreList, getMovies, getMoviesStats }
