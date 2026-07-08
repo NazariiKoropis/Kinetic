@@ -17,8 +17,7 @@ const moveTempFile = async (tempUrl, folder, id) => {
 			await fs.access(oldPath)
 			await fs.rename(oldPath, newPath)
 			return `/uploads/${folder}/${id}/${fileName}`
-		} catch (err) {
-
+		} catch {
 			return tempUrl
 		}
 	} catch (err) {

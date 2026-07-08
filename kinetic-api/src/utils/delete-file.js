@@ -12,8 +12,8 @@ const deleteFile = async (fileUrl, folder, id) => {
 			await fs.access(filePath)
 			await fs.unlink(filePath)
 			console.log(`File deleted: ${fileName}`)
-		} catch (e) {
-
+		} catch {
+			// File does not exist or could not be accessed, ignore
 		}
 	} catch (err) {
 		console.error(`Error processing file deletion for ${fileUrl}:`, err.message)

@@ -186,7 +186,7 @@ const refresh = async (req, res) => {
                 }
             })
 
-        } catch (err) {
+        } catch {
 
             await Session.deleteOne({
                 _id: savedSession._id
