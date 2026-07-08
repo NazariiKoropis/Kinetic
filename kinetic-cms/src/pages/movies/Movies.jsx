@@ -1,8 +1,14 @@
-import { Box } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import { Box, Button, Typography } from '@mui/material'
+import { useState } from 'react'
 import MoviesStatsOverview from './components/MoviesStatsOverview'
-// Тут пізніше буде імпорт Toolbar і Table
+import MoviesToolbar from './components/MoviesToolbar'
 
 function Movies() {
+	const [genre, setGenre] = useState([])
+
+	const [viewMode, setViewMode] = useState('grid')
+
 	return (
 		<Box
 			component="section"
@@ -12,12 +18,37 @@ function Movies() {
 				gap: 3
 			}}
 		>
-			{/* 1. Блок статистики */}
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					gap: 2
+				}}
+			>
+				<Typography
+					variant="h4"
+					sx={{ fontWeight: 'bold' }}
+				>
+					Movies management
+				</Typography>
+				<Button
+					variant="contained"
+					startIcon={<AddIcon />}
+					size="large"
+					onClick={() => {
+						alert('Create Movie')
+					}}
+				>
+					Create Movie
+				</Button>
+			</Box>
 			<MoviesStatsOverview />
-
-			{/* 2. Блок фільтрів та пошуку (зробимо пізніше) */}
-			{/* <MoviesToolbar /> */}
-
+			<MoviesToolbar
+				genre={genre}
+				onViewModeChange={setViewMode}
+				viewMode={viewMode}
+			/>
 			{/* 3. Блок таблиці/карточок (зробимо пізніше) */}
 			{/* <MoviesTable /> */}
 		</Box>

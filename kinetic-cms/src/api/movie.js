@@ -1,9 +1,13 @@
-import { privateApi } from '@config/client'
+import { privateApi, publicApi } from '@config/client'
 
 const getMoviesStats = async () => {
 	const response = await privateApi.get('/admin/movie/stats')
-
 	return response.data
 }
 
-export { getMoviesStats }
+const getGenreList = async () => {
+	const response = await publicApi.get('/genre')
+	return response.data
+}
+
+export { getGenreList, getMoviesStats }
