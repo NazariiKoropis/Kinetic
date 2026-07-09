@@ -455,7 +455,7 @@ const getMovieForSearch = async (req, res) => {
 const getDashboardStats = async (req, res) => {
   try {
 
-    const [total, released, soon, hidden] = await Promise.all([
+    const [total, released, upcoming, hidden] = await Promise.all([
       Movie.countDocuments(),
       Movie.countDocuments({ status: MOVIE_STATUSES.RELEASED }),
       Movie.countDocuments({ status: MOVIE_STATUSES.UPCOMING }),
@@ -467,7 +467,7 @@ const getDashboardStats = async (req, res) => {
       data: {
         total,
         released,
-        soon,
+        upcoming,
         hidden
       }
     })

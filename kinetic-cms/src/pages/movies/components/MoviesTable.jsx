@@ -9,17 +9,31 @@ import {
 	TableCell,
 	TableContainer,
 	TableHead,
+	TablePagination,
 	TableRow,
 	Tooltip,
 	Typography
 } from '@mui/material'
 
+import { MOVIE_STATUSES, MPAA_RATINGS } from '@constants/movie'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import PreviewIcon from '@mui/icons-material/Preview'
 import { getStatusColor } from '@utils/movie'
 
-function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
+function MoviesTable({
+	movies,
+	onMPAAChange,
+	onStatusChange,
+	onDelete,
+	onEdit,
+	onPreview,
+	page = 1,
+	limit = 10,
+	totalItems = 0,
+	onPageChange,
+	onLimitChange
+}) {
 	return (
 		<Box
 			component="section"
@@ -44,7 +58,7 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 						>
 							<TableCell>Poster</TableCell>
 							<TableCell>Title</TableCell>
-							<TableCell>Duration</TableCell>
+							<TableCell>Year / Duration</TableCell>
 							<TableCell>Genres</TableCell>
 							<TableCell>MPAA</TableCell>
 							<TableCell>Status</TableCell>
@@ -76,7 +90,6 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 										alt={movie.title}
 									/>
 								</TableCell>
-
 								<TableCell>
 									<Typography
 										variant="body1"
@@ -84,16 +97,7 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 									>
 										{movie.title}
 									</Typography>
-									{movie.originalTitle && (
-										<Typography
-											variant="body2"
-											color="text.secondary"
-										>
-											{movie.originalTitle}
-										</Typography>
-									)}
 								</TableCell>
-
 								<TableCell>
 									<Typography variant="body2">{movie.releaseYear}</Typography>
 									<Typography
@@ -103,7 +107,6 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 										{movie.duration} min
 									</Typography>
 								</TableCell>
-
 								<TableCell>
 									<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
 										{movie.genres?.map(genre => (
@@ -116,36 +119,47 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 										))}
 									</Box>
 								</TableCell>
-
-								<TableCell>
-									<Chip
-										label={movie.ratingMPAA}
-										size="small"
-										color="default"
-									/>
-								</TableCell>
-
 								<TableCell>
 									<Select
-										value={movie.status}
+										value={movie?.ratingMPAA || MPAA_RATINGS.NR}
+										size="small"
+										onChange={e => onMPAAChange(movie._id, e.target.value)}
+										sx={{ minWidth: 120, height: 32 }}
+									>
+										{Object.values(MPAA_RATINGS).map(rating => (
+											<MenuItem
+												key={rating}
+												value={rating}
+											>
+												{rating}
+											</MenuItem>
+										))}
+									</Select>
+								</TableCell>
+								<TableCell>
+									<Select
+										value={movie?.status || MOVIE_STATUSES.RELEASED}
 										size="small"
 										onChange={e => onStatusChange(movie._id, e.target.value)}
 										sx={{
 											minWidth: 120,
 											height: 32,
-
-											color: `${getStatusColor(movie.status)}.main`,
+											color: `${getStatusColor(movie.status || MOVIE_STATUSES.RELEASED)}.main`,
 											'& .MuiOutlinedInput-notchedOutline': {
-												borderColor: `${getStatusColor(movie.status)}.main`
+												borderColor: `${getStatusColor(movie.status || MOVIE_STATUSES.RELEASED)}.main`
 											}
 										}}
 									>
-										<MenuItem value="released">Released</MenuItem>
-										<MenuItem value="soon">Soon</MenuItem>
-										<MenuItem value="hidden">Hidden</MenuItem>
+										{Object.values(MOVIE_STATUSES).map(status => (
+											<MenuItem
+												key={status}
+												value={status}
+											>
+												{status.charAt(0).toUpperCase() + status.slice(1)}
+											</MenuItem>
+										))}
 									</Select>
 								</TableCell>
-
 								<TableCell align="right">
 									<Box
 										sx={{
@@ -154,7 +168,7 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 											gap: 0.5
 										}}
 									>
-										<Tooltip title="Попередній перегляд">
+										<Tooltip title="Preview">
 											<IconButton
 												size="small"
 												onClick={() => onPreview(movie._id)}
@@ -163,7 +177,7 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 												<PreviewIcon fontSize="small" />
 											</IconButton>
 										</Tooltip>
-										<Tooltip title="Редагувати">
+										<Tooltip title="Edit">
 											<IconButton
 												size="small"
 												onClick={() => onEdit(movie._id)}
@@ -172,7 +186,7 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 												<EditIcon fontSize="small" />
 											</IconButton>
 										</Tooltip>
-										<Tooltip title="Видалити">
+										<Tooltip title="Delete">
 											<IconButton
 												size="small"
 												onClick={() => onDelete(movie._id)}
@@ -188,6 +202,20 @@ function MoviesTable({ movies, onStatusChange, onDelete, onEdit, onPreview }) {
 					</TableBody>
 				</Table>
 			</TableContainer>
+
+			<TablePagination
+				component="div"
+				count={totalItems}
+				page={page - 1}
+				onPageChange={(event, newPage) => onPageChange(newPage + 1)}
+				rowsPerPage={limit}
+				onRowsPerPageChange={event => {
+					onLimitChange(parseInt(event.target.value, 10))
+					onPageChange(1)
+				}}
+				rowsPerPageOptions={[5, 10, 25, 50]}
+				labelRowsPerPage="Lines on a page:"
+			/>
 		</Box>
 	)
 }

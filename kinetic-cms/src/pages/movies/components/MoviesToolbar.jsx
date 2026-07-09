@@ -1,4 +1,5 @@
 import { getGenreList } from '@api/movie'
+import { MOVIE_STATUSES } from '@constants/movie'
 import Loader from '@layout/Loader'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
@@ -97,16 +98,21 @@ function MoviesToolbar({
 				label="Status"
 				variant="outlined"
 				size="small"
-				value={status}
+				value={status || 'all'}
 				onChange={e => onStatusChange(e.target.value)}
 				sx={{
 					gridColumn: { xs: '1 / -1', md: 'auto' }
 				}}
 			>
 				<MenuItem value="all">All</MenuItem>
-				<MenuItem value="released">Released</MenuItem>
-				<MenuItem value="soon">Soon</MenuItem>
-				<MenuItem value="hidden">Hidden</MenuItem>
+				{Object.values(MOVIE_STATUSES).map(status => (
+					<MenuItem
+						key={status}
+						value={status}
+					>
+						{status.charAt(0).toUpperCase() + status.slice(1)}
+					</MenuItem>
+				))}
 			</TextField>
 
 			<Autocomplete

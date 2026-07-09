@@ -1,42 +1,72 @@
-import { getMoviesStats } from '@api/movie'
-import Loader from '@layout/Loader'
+import { MOVIE_STATUSES } from '@constants/movie'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
 import MovieCreationIcon from '@mui/icons-material/MovieCreation'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import { Box } from '@mui/material'
+import { Box, Skeleton } from '@mui/material'
 import CardStat from '@shared/CardStat'
-import { useEffect, useState } from 'react'
 
-const MoviesStatsOverview = () => {
-	const [loading, setLoading] = useState(true)
-	const [stats, setStats] = useState({
-		total: 0,
-		released: 0,
-		soon: 0,
-		hidden: 0
-	})
-
-	useEffect(() => {
-		const fetchStats = async () => {
-			try {
-				setLoading(true)
-				const response = await getMoviesStats()
-
-				setStats(response.data)
-			} catch (error) {
-				console.error('Error loading statistics', error)
-			} finally {
-				setLoading(false)
-			}
-		}
-
-		fetchStats()
-	}, [])
-
+const MoviesStatsOverview = ({
+	stats,
+	loading,
+	activeStatus,
+	onStatusSelect
+}) => {
 	if (loading) {
-		return <Loader />
+		return (
+			<Box
+				sx={{
+					display: 'grid',
+					gridTemplateColumns: {
+						xs: '1fr',
+						sm: 'repeat(2, 1fr)',
+						lg: 'repeat(4, 1fr)'
+					},
+					gap: 2
+				}}
+			>
+				{[...Array(4)].map((_, idx) => (
+					<Skeleton
+						key={idx}
+						variant="rounded"
+						height={100}
+						sx={{ borderRadius: 2 }}
+					/>
+				))}
+			</Box>
+		)
 	}
+
+	const statItems = [
+		{
+			id: 'all',
+			title: 'Всього фільмів',
+			value: stats?.total ?? 0,
+			color: '#3B82F6',
+			icon: <MovieCreationIcon />
+		},
+		{
+			id: MOVIE_STATUSES.RELEASED,
+			title: 'Опубліковано',
+			value: stats?.released ?? 0,
+			color: '#10B981',
+			icon: <DoneAllIcon />
+		},
+		{
+			id: MOVIE_STATUSES.UPCOMING,
+			title: 'Очікують',
+			value: stats?.upcoming ?? 0,
+			color: '#F59E0B',
+			icon: <NewReleasesIcon />
+		},
+		{
+			id: MOVIE_STATUSES.HIDDEN,
+			title: 'Приховано',
+			value: stats?.hidden ?? 0,
+			color: '#EF4444',
+			icon: <VisibilityOffIcon />
+		}
+	]
 
 	return (
 		<Box
@@ -50,30 +80,37 @@ const MoviesStatsOverview = () => {
 				gap: 2
 			}}
 		>
-			<CardStat
-				icon={<MovieCreationIcon />}
-				title="Всього фільмів"
-				value={stats.total.toString()}
-				color="#3B82F6"
-			/>
-			<CardStat
-				icon={<DoneAllIcon />}
-				title="Опубліковано"
-				value={stats.released.toString()}
-				color="#10B981"
-			/>
-			<CardStat
-				icon={<NewReleasesIcon />}
-				title="Очікують"
-				value={stats.soon.toString()}
-				color="#F59E0B"
-			/>
-			<CardStat
-				icon={<VisibilityOffIcon />}
-				title="Приховано"
-				value={stats.hidden.toString()}
-				color="#EF4444"
-			/>
+			{statItems.map(item => {
+				const isSelected = activeStatus === item.id
+
+				return (
+					<Box
+						key={item.id}
+						onClick={() => onStatusSelect(isSelected ? 'all' : item.id)}
+						sx={{
+							cursor: 'pointer',
+							transition:
+								'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+							borderRadius: 2,
+							border: isSelected
+								? `2px solid ${item.color}`
+								: '2px solid transparent',
+							transform: isSelected ? 'scale(1.02)' : 'none',
+							'&:hover': {
+								transform: 'translateY(-4px) scale(1.01)',
+								boxShadow: '0 6px 20px rgba(0,0,0,0.4)'
+							}
+						}}
+					>
+						<CardStat
+							icon={item.icon}
+							title={item.title}
+							value={String(item.value)}
+							color={item.color}
+						/>
+					</Box>
+				)
+			})}
 		</Box>
 	)
 }
