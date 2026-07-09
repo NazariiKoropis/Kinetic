@@ -14,7 +14,7 @@ const buildMovieFilter = (req, res, next) => {
 		]
 	}
 	if (studios) filter.studios = { $in: studios.split(',') }
-	if (genres) filter.genres = { $in: genres.split(',') }
+	if (genres) filter.genres = { $all: genres.split(',') }
 	if (countries) filter.countries = { $in: countries.split(',') }
 	if (releaseYear) filter.releaseYear = releaseYear
 	if (status) filter.status = status

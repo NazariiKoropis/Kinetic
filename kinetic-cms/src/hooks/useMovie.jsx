@@ -154,7 +154,15 @@ function useMovie() {
 
 		stats,
 		statsLoading,
-		filters: { searchTerm, status, genres, page, limit, sortBy, sortOrder },
+		filters: {
+			searchTerm,
+			status,
+			genres,
+			page,
+			limit,
+			sortBy,
+			sortOrder
+		},
 		setFilters: {
 			setSearchTerm,
 			setStatus,

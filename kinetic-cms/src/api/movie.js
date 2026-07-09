@@ -13,7 +13,7 @@ const updateMovieStatus = async (movieId, newStatus) => {
 
 
 const updateMovieMPAA = async (movieId, newMPAA) => {
-	const response = await privateApi.patch(`/admin/movie/mpaa/${movieId}`, { ratingMPAA: newMPAA })
+	const response = await privateApi.put(`/admin/mpaa/${movieId}`, { ratingMPAA: newMPAA })
 	return response.data
 }
 

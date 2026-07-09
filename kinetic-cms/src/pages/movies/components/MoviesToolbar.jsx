@@ -1,16 +1,18 @@
 import { getGenreList } from '@api/movie'
 import { MOVIE_STATUSES } from '@constants/movie'
 import Loader from '@layout/Loader'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import SearchIcon from '@mui/icons-material/Search'
 import ViewListIcon from '@mui/icons-material/ViewList'
 import ViewModuleIcon from '@mui/icons-material/ViewModule'
-
 import {
 	Autocomplete,
 	Box,
 	Checkbox,
+	IconButton,
 	InputAdornment,
 	MenuItem,
 	TextField,
@@ -29,6 +31,10 @@ function MoviesToolbar({
 	onGenreChange,
 	status,
 	onStatusChange,
+	sortBy,
+	onSortByChange,
+	sortOrder,
+	onSortOrderChange,
 	viewMode,
 	onViewModeChange
 }) {
@@ -63,8 +69,9 @@ function MoviesToolbar({
 				alignItems: 'center',
 
 				gridTemplateColumns: {
-					xs: '1fr auto',
-					md: '250px 150px 1fr auto'
+					xs: '1fr',
+					sm: '1fr 1fr',
+					md: '200px 120px 1fr 150px 40px auto'
 				},
 				backgroundColor: 'background.paper',
 				padding: 2,
@@ -89,7 +96,7 @@ function MoviesToolbar({
 					}
 				}}
 				sx={{
-					gridColumn: { xs: '1 / -1', md: 'auto' }
+					gridColumn: { xs: 'auto', sm: '1 / -1', md: 'auto' }
 				}}
 			/>
 
@@ -101,7 +108,7 @@ function MoviesToolbar({
 				value={status || 'all'}
 				onChange={e => onStatusChange(e.target.value)}
 				sx={{
-					gridColumn: { xs: '1 / -1', md: 'auto' }
+					gridColumn: { xs: 'auto', sm: 'auto', md: 'auto' }
 				}}
 			>
 				<MenuItem value="all">All</MenuItem>
@@ -151,10 +158,42 @@ function MoviesToolbar({
 					/>
 				)}
 				sx={{
-					gridColumn: { xs: '1', md: 'auto' },
-					maxWidth: { xs: 'none', md: '200px' }
+					gridColumn: { xs: 'auto', sm: 'auto', md: 'auto' }
 				}}
 			/>
+
+			<TextField
+				select
+				label="Sort by"
+				variant="outlined"
+				size="small"
+				value={sortBy || 'createdAt'}
+				onChange={e => onSortByChange(e.target.value)}
+				sx={{
+					gridColumn: { xs: 'auto', sm: 'auto', md: 'auto' }
+				}}
+			>
+				<MenuItem value="createdAt">Date added</MenuItem>
+				<MenuItem value="title">Title</MenuItem>
+				<MenuItem value="releaseYear">Release year</MenuItem>
+				<MenuItem value="duration">Duration</MenuItem>
+			</TextField>
+
+			<IconButton
+				onClick={() => onSortOrderChange(sortOrder === 'asc' ? 'desc' : 'asc')}
+				title={sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+				size="medium"
+				sx={{
+					border: '1px solid rgba(255, 255, 255, 0.23)',
+					borderRadius: 1,
+					height: 40,
+					width: 40,
+					gridColumn: { xs: 'auto', sm: 'auto', md: 'auto' },
+					justifySelf: { xs: 'end', sm: 'start', md: 'auto' }
+				}}
+			>
+				{sortOrder === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+			</IconButton>
 
 			<ToggleButtonGroup
 				value={viewMode}
@@ -164,8 +203,8 @@ function MoviesToolbar({
 				}}
 				size="small"
 				sx={{
-					gridColumn: { xs: '2', md: 'auto' },
-					justifySelf: 'end'
+					gridColumn: { xs: 'auto', sm: '1 / -1', md: 'auto' },
+					justifySelf: { xs: 'end', md: 'auto' }
 				}}
 			>
 				<ToggleButton

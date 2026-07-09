@@ -3,6 +3,7 @@ import Loader from '@layout/Loader'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Button, LinearProgress, Typography } from '@mui/material'
 import { useState } from 'react'
+
 import MoviesGrid from './components/MoviesGrid'
 import MoviesStatsOverview from './components/MoviesStatsOverview'
 import MoviesTable from './components/MoviesTable'
@@ -38,8 +39,9 @@ function Movies() {
 			<Box
 				sx={{
 					display: 'flex',
+					flexDirection: { xs: 'column', sm: 'row' },
 					justifyContent: 'space-between',
-					alignItems: 'center',
+					alignItems: { xs: 'flex-start', sm: 'center' },
 					gap: 2
 				}}
 			>
@@ -71,6 +73,10 @@ function Movies() {
 				onStatusChange={setFilters.setStatus}
 				genre={filters.genres}
 				onGenreChange={setFilters.setGenres}
+				sortBy={filters.sortBy}
+				onSortByChange={setFilters.setSortBy}
+				sortOrder={filters.sortOrder}
+				onSortOrderChange={setFilters.setSortOrder}
 				viewMode={viewMode}
 				onViewModeChange={setViewMode}
 			/>

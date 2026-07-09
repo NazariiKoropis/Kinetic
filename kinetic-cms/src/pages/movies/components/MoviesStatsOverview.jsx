@@ -40,28 +40,28 @@ const MoviesStatsOverview = ({
 	const statItems = [
 		{
 			id: 'all',
-			title: 'Всього фільмів',
+			title: 'All movies',
 			value: stats?.total ?? 0,
 			color: '#3B82F6',
 			icon: <MovieCreationIcon />
 		},
 		{
 			id: MOVIE_STATUSES.RELEASED,
-			title: 'Опубліковано',
+			title: 'Published',
 			value: stats?.released ?? 0,
 			color: '#10B981',
 			icon: <DoneAllIcon />
 		},
 		{
 			id: MOVIE_STATUSES.UPCOMING,
-			title: 'Очікують',
+			title: 'Upcoming',
 			value: stats?.upcoming ?? 0,
 			color: '#F59E0B',
 			icon: <NewReleasesIcon />
 		},
 		{
 			id: MOVIE_STATUSES.HIDDEN,
-			title: 'Приховано',
+			title: 'Hidden',
 			value: stats?.hidden ?? 0,
 			color: '#EF4444',
 			icon: <VisibilityOffIcon />
@@ -75,7 +75,7 @@ const MoviesStatsOverview = ({
 				gridTemplateColumns: {
 					xs: '1fr',
 					sm: 'repeat(2, 1fr)',
-					lg: 'repeat(4, 1fr)'
+					md: 'repeat(4, 1fr)'
 				},
 				gap: 2
 			}}
