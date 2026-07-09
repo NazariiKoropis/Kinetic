@@ -1,3 +1,7 @@
+import { MOVIE_STATUSES, MPAA_RATINGS } from '@constants/movie'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import PreviewIcon from '@mui/icons-material/Preview'
 import {
 	Box,
 	Chip,
@@ -14,12 +18,9 @@ import {
 	Tooltip,
 	Typography
 } from '@mui/material'
-
-import { MOVIE_STATUSES, MPAA_RATINGS } from '@constants/movie'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import PreviewIcon from '@mui/icons-material/Preview'
+import ImageDialog from '@ui/ImageDialog'
 import { getStatusColor } from '@utils/movie'
+import { useState } from 'react'
 
 function MoviesTable({
 	movies,
@@ -34,6 +35,8 @@ function MoviesTable({
 	onPageChange,
 	onLimitChange
 }) {
+	const [activePoster, setActivePoster] = useState(null)
+
 	return (
 		<Box
 			component="section"
@@ -79,12 +82,19 @@ function MoviesTable({
 								<TableCell>
 									<Box
 										component="img"
+										onClick={() => setActivePoster(movie.poster)}
 										sx={{
 											height: 75,
 											width: 50,
 											objectFit: 'cover',
 											borderRadius: 1,
-											boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+											boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+											cursor: 'pointer',
+											transition: 'transform 0.2s ease',
+											'&:hover': {
+												transform: 'scale(1.1)',
+												boxShadow: '0 6px 12px rgba(0,0,0,0.5)'
+											}
 										}}
 										src={movie.poster}
 										alt={movie.title}
@@ -215,6 +225,13 @@ function MoviesTable({
 				}}
 				rowsPerPageOptions={[5, 10, 25, 50]}
 				labelRowsPerPage="Lines on a page:"
+			/>
+
+			<ImageDialog
+				open={Boolean(activePoster)}
+				onClose={() => setActivePoster(null)}
+				imageUrl={activePoster}
+				alt="Full size poster"
 			/>
 		</Box>
 	)
