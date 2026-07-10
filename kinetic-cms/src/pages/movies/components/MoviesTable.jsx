@@ -18,9 +18,7 @@ import {
 	Tooltip,
 	Typography
 } from '@mui/material'
-import ImageDialog from '@ui/ImageDialog'
 import { getStatusColor } from '@utils/movie'
-import { useState } from 'react'
 
 function MoviesTable({
 	movies,
@@ -33,10 +31,9 @@ function MoviesTable({
 	limit = 10,
 	totalItems = 0,
 	onPageChange,
-	onLimitChange
+	onLimitChange,
+	onPosterClick
 }) {
-	const [activePoster, setActivePoster] = useState(null)
-
 	return (
 		<Box
 			component="section"
@@ -82,7 +79,7 @@ function MoviesTable({
 								<TableCell>
 									<Box
 										component="img"
-										onClick={() => setActivePoster(movie.poster)}
+										onClick={() => onPosterClick?.(movie.poster)}
 										sx={{
 											height: 75,
 											width: 50,
@@ -225,13 +222,6 @@ function MoviesTable({
 				}}
 				rowsPerPageOptions={[5, 10, 25, 50]}
 				labelRowsPerPage="Lines on a page:"
-			/>
-
-			<ImageDialog
-				open={Boolean(activePoster)}
-				onClose={() => setActivePoster(null)}
-				imageUrl={activePoster}
-				alt="Full size poster"
 			/>
 		</Box>
 	)

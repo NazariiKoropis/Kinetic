@@ -4,14 +4,9 @@ import MovieCreationIcon from '@mui/icons-material/MovieCreation'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { Box, Skeleton } from '@mui/material'
-import CardStat from '@shared/CardStat'
+import StatCard from '@shared/StatCard'
 
-const MoviesStatsOverview = ({
-	stats,
-	loading,
-	activeStatus,
-	onStatusSelect
-}) => {
+function MoviesStatsOverview({ stats, loading, activeStatus, onStatusSelect }) {
 	if (loading) {
 		return (
 			<Box
@@ -102,7 +97,7 @@ const MoviesStatsOverview = ({
 							}
 						}}
 					>
-						<CardStat
+						<StatCard
 							icon={item.icon}
 							title={item.title}
 							value={String(item.value)}

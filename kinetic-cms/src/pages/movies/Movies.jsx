@@ -2,6 +2,7 @@ import useMovie from '@hooks/useMovie'
 import Loader from '@layout/Loader'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Button, LinearProgress, Typography } from '@mui/material'
+import ImageDialog from '@ui/ImageDialog'
 import { useState } from 'react'
 
 import MoviesGrid from './components/MoviesGrid'
@@ -10,7 +11,8 @@ import MoviesTable from './components/MoviesTable'
 import MoviesToolbar from './components/MoviesToolbar'
 
 function Movies() {
-	const [viewMode, setViewMode] = useState('table')
+	const [viewMode, setViewMode] = useState('grid')
+	const [activePoster, setActivePoster] = useState(null)
 
 	const {
 		movies,
@@ -99,11 +101,32 @@ function Movies() {
 						onDelete={operations.handleDeleteMovie}
 						onEdit={id => alert(`Edit movie with ID: ${id}`)}
 						onPreview={id => alert(`Preview movie with ID: ${id}`)}
+						onPosterClick={setActivePoster}
 					/>
 				) : (
-					<MoviesGrid movies={movies} />
+					<MoviesGrid
+						movies={movies}
+						page={filters.page}
+						limit={filters.limit}
+						totalItems={totalItems}
+						onPageChange={setFilters.setPage}
+						onLimitChange={setFilters.setLimit}
+						onStatusChange={operations.handleStatusChange}
+						onMPAAChange={operations.handleMPAAChange}
+						onDelete={operations.handleDeleteMovie}
+						onEdit={id => alert(`Edit ${id}`)}
+						onPreview={id => alert(`Preview ${id}`)}
+						onPosterClick={setActivePoster}
+					/>
 				)}
 			</Box>
+
+			<ImageDialog
+				open={Boolean(activePoster)}
+				onClose={() => setActivePoster(null)}
+				imageUrl={activePoster}
+				alt="Full size poster"
+			/>
 		</Box>
 	)
 }

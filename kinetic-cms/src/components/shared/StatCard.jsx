@@ -1,8 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
-// mb add in future function onClick that will set filter on films
-function CardStat({ icon, title, value, color }) {
+function StatCard({ icon, title, value, color }) {
 	return (
 		<Box
 			sx={{
@@ -12,15 +11,13 @@ function CardStat({ icon, title, value, color }) {
 				backgroundColor: 'background.paper',
 				padding: { xs: 1.5, sm: 2, md: 2.5 },
 				borderRadius: 2,
-				border: '1px solid rgba(255, 255, 255, 0.15)',
-				transition: 'all 0.3s ease',
+				width: '100%',
+				height: '100%',
+				boxIntersection: 'border-box',
+				transition: 'all 0.2s ease',
 
 				'&:hover': {
-					backgroundColor:
-						'color-mix(in srgb, var(--cms-primary) 15%, transparent)',
-					cursor: 'pointer',
-					transform: 'translateY(-2px)',
-					boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+					backgroundColor: alpha(color, 0.05)
 				}
 			}}
 		>
@@ -31,7 +28,7 @@ function CardStat({ icon, title, value, color }) {
 					justifyContent: 'center',
 					flexShrink: 0,
 					color: color,
-					backgroundColor: alpha(color, 0.15),
+					backgroundColor: alpha(color, 0.12),
 					borderRadius: '50%',
 
 					width: { xs: 44, sm: 52, md: 60 },
@@ -83,4 +80,4 @@ function CardStat({ icon, title, value, color }) {
 	)
 }
 
-export default CardStat
+export default StatCard

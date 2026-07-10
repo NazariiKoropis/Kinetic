@@ -29,7 +29,7 @@ const buildMovieFilter = (req, res, next) => {
 
 	req.mongoQuery = {
 		filter,
-		sort: { [sortBy]: order },
+		sort: { [sortBy]: order, _id: order },
 		skip,
 		limit,
 		page,
