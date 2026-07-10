@@ -1,4 +1,3 @@
-import { MOVIE_STATUSES, MPAA_RATINGS } from '@constants/movie'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import PreviewIcon from '@mui/icons-material/Preview'
@@ -6,8 +5,6 @@ import {
 	Box,
 	Chip,
 	IconButton,
-	MenuItem,
-	Select,
 	Table,
 	TableBody,
 	TableCell,
@@ -18,7 +15,8 @@ import {
 	Tooltip,
 	Typography
 } from '@mui/material'
-import { getStatusColor } from '@utils/movie'
+import MpaaSelect from '@shared/MpaaSelect'
+import StatusSelect from '@shared/StatusSelect'
 
 function MoviesTable({
 	movies,
@@ -127,45 +125,18 @@ function MoviesTable({
 									</Box>
 								</TableCell>
 								<TableCell>
-									<Select
-										value={movie?.ratingMPAA || MPAA_RATINGS.NR}
-										size="small"
+									<MpaaSelect
+										value={movie?.ratingMPAA}
 										onChange={e => onMPAAChange(movie._id, e.target.value)}
 										sx={{ minWidth: 120, height: 32 }}
-									>
-										{Object.values(MPAA_RATINGS).map(rating => (
-											<MenuItem
-												key={rating}
-												value={rating}
-											>
-												{rating}
-											</MenuItem>
-										))}
-									</Select>
+									/>
 								</TableCell>
 								<TableCell>
-									<Select
-										value={movie?.status || MOVIE_STATUSES.RELEASED}
-										size="small"
+									<StatusSelect
+										value={movie?.status}
 										onChange={e => onStatusChange(movie._id, e.target.value)}
-										sx={{
-											minWidth: 120,
-											height: 32,
-											color: `${getStatusColor(movie.status || MOVIE_STATUSES.RELEASED)}.main`,
-											'& .MuiOutlinedInput-notchedOutline': {
-												borderColor: `${getStatusColor(movie.status || MOVIE_STATUSES.RELEASED)}.main`
-											}
-										}}
-									>
-										{Object.values(MOVIE_STATUSES).map(status => (
-											<MenuItem
-												key={status}
-												value={status}
-											>
-												{status.charAt(0).toUpperCase() + status.slice(1)}
-											</MenuItem>
-										))}
-									</Select>
+										sx={{ minWidth: 120, height: 32 }}
+									/>
 								</TableCell>
 								<TableCell align="right">
 									<Box

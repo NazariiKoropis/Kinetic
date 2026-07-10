@@ -1,20 +1,17 @@
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import PreviewIcon from '@mui/icons-material/Preview'
 import {
 	Box,
 	Card,
 	CardContent,
 	Chip,
 	IconButton,
-	MenuItem,
-	Select,
 	Tooltip,
 	Typography
 } from '@mui/material'
-
-import { MOVIE_STATUSES, MPAA_RATINGS } from '@constants/movie'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import PreviewIcon from '@mui/icons-material/Preview'
-import { getStatusColor } from '@utils/movie'
+import MpaaSelect from '@shared/MpaaSelect'
+import StatusSelect from '@shared/StatusSelect'
 
 function MovieCard({
 	movie,
@@ -78,9 +75,8 @@ function MovieCard({
 						'& .MuiOutlinedInput-notchedOutline': { border: 'none' }
 					}}
 				>
-					<Select
-						value={movie?.ratingMPAA || MPAA_RATINGS.NR}
-						size="small"
+					<MpaaSelect
+						value={movie?.ratingMPAA}
 						onChange={e => onMPAAChange(movie._id, e.target.value)}
 						sx={{
 							height: 28,
@@ -89,17 +85,7 @@ function MovieCard({
 							color: '#fff',
 							'& .MuiSelect-select': { py: 0, pl: 1, pr: '24px !important' }
 						}}
-					>
-						{Object.values(MPAA_RATINGS).map(rating => (
-							<MenuItem
-								key={rating}
-								value={rating}
-								sx={{ fontSize: '0.8rem' }}
-							>
-								{rating}
-							</MenuItem>
-						))}
-					</Select>
+					/>
 				</Box>
 			</Box>
 
@@ -167,30 +153,12 @@ function MovieCard({
 						pt: 1
 					}}
 				>
-					<Select
-						value={movie?.status || MOVIE_STATUSES.RELEASED}
-						size="small"
+					<StatusSelect
+						value={movie?.status}
 						onChange={e => onStatusChange(movie._id, e.target.value)}
 						fullWidth
-						sx={{
-							height: 32,
-							fontSize: '0.8rem',
-							color: `${getStatusColor(movie.status || MOVIE_STATUSES.RELEASED)}.main`,
-							'& .MuiOutlinedInput-notchedOutline': {
-								borderColor: `${getStatusColor(movie.status || MOVIE_STATUSES.RELEASED)}.main`
-							}
-						}}
-					>
-						{Object.values(MOVIE_STATUSES).map(status => (
-							<MenuItem
-								key={status}
-								value={status}
-								sx={{ fontSize: '0.8rem' }}
-							>
-								{status.charAt(0).toUpperCase() + status.slice(1)}
-							</MenuItem>
-						))}
-					</Select>
+						sx={{ height: 32, fontSize: '0.8rem' }}
+					/>
 
 					<Box
 						sx={{
