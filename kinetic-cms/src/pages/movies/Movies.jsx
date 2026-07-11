@@ -1,11 +1,11 @@
+import useMovie from '@hooks/useMovie'
 import Loader from '@layout/Loader'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Button, LinearProgress, Typography } from '@mui/material'
 import ImageDialog from '@ui/ImageDialog'
 import { useCallback, useState } from 'react'
-
-import useMovie from '@hooks/useMovie'
 import { useNavigate } from 'react-router-dom'
+
 import MoviesGrid from './components/MoviesGrid'
 import MoviesStatsOverview from './components/MoviesStatsOverview'
 import MoviesTable from './components/MoviesTable'
@@ -81,6 +81,8 @@ function Movies() {
 				onStatusChange={setFilters.setStatus}
 				genre={filters.genres}
 				onGenreChange={setFilters.setGenres}
+				studio={filters.studios}
+				onStudioChange={setFilters.setStudios}
 				sortBy={filters.sortBy}
 				onSortByChange={setFilters.setSortBy}
 				sortOrder={filters.sortOrder}

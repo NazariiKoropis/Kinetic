@@ -24,6 +24,7 @@ function useMovie() {
 	const [debouncedSearch, setDebouncedSearch] = useState('')
 	const [status, setStatus] = useState('all')
 	const [genres, setGenres] = useState([])
+	const [studios, setStudios] = useState([])
 	const [page, setPage] = useState(1)
 	const [limit, setLimit] = useState(10)
 	const [sortBy, setSortBy] = useState('createdAt')
@@ -62,6 +63,7 @@ function useMovie() {
 			if (debouncedSearch) params.title = debouncedSearch
 			if (status !== 'all') params.status = status
 			if (genres.length > 0) params.genres = genres.join(',')
+			if (studios.length > 0) params.studios = studios.join(',')
 
 			const response = await getMovies(params)
 			setMovies(response.data)
@@ -72,7 +74,7 @@ function useMovie() {
 			setLoading(false)
 			setIsFirstLoad(false)
 		}
-	}, [debouncedSearch, status, genres, page, limit, sortBy, sortOrder])
+	}, [debouncedSearch, status, genres, studios, page, limit, sortBy, sortOrder])
 
 	useEffect(() => {
 		fetchMovies()
@@ -142,6 +144,7 @@ function useMovie() {
 		setSearchTerm('')
 		setStatus('all')
 		setGenres([])
+		setStudios([])
 		setPage(1)
 	}
 
@@ -156,6 +159,7 @@ function useMovie() {
 			searchTerm,
 			status,
 			genres,
+			studios,
 			page,
 			limit,
 			sortBy,
@@ -165,6 +169,7 @@ function useMovie() {
 			setSearchTerm,
 			setStatus,
 			setGenres,
+			setStudios,
 			setPage,
 			setLimit,
 			setSortBy,

@@ -10,6 +10,7 @@ import authRouter from '#routes/auth.route.js'
 import countryRouter from '#routes/country.route.js'
 import genreRouter from '#routes/genre.route.js'
 import movieRouter from '#routes/movie.route.js'
+import studioRouter from '#routes/studio.route.js'
 import uploadRouter from '#routes/upload.route.js'
 
 import connectDB from '#config/db.js'
@@ -48,6 +49,7 @@ app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/movie', movieRouter)
 app.use('/api/v1/genre', genreRouter)
 app.use('/api/v1/country', countryRouter)
+app.use('/api/v1/studio', studioRouter)
 
 app.use('/api/v1/admin', adminRouter)
 

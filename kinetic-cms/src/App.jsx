@@ -1,17 +1,15 @@
+import { useRefreshUser } from '@hooks/useRefresh'
 import Layout from '@layout/Layout'
+import Loader from '@layout/Loader'
 import ChangeHistory from '@pages/change-history'
-
 import Dashboard from '@pages/dashboard'
-
 import Login from '@pages/login'
+import MovieFormPage from '@pages/movies/MovieFormPage'
 import People from '@pages/people'
 import Reports from '@pages/reports'
+import ProtectedRoute from '@routes/ProtectedRoute'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { useRefreshUser } from '@hooks/useRefresh'
-import Loader from '@layout/Loader'
-import MovieFormPage from '@pages/movies/MovieFormPage'
-import ProtectedRoute from '@routes/ProtectedRoute'
 import Movies from './pages/movies'
 
 function App() {

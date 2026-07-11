@@ -33,4 +33,9 @@ const getGenreList = async () => {
 	return response.data
 }
 
-export { deleteMovie, getGenreList, getMovies, getMoviesStats, updateMovieMPAA, updateMovieStatus }
+const getStudioList = async () => {
+	const response = await publicApi.get('/studio')
+	return response.data.data
+}
+
+export { deleteMovie, getGenreList, getMovies, getMoviesStats, getStudioList, updateMovieMPAA, updateMovieStatus }

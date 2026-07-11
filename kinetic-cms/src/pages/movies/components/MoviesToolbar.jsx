@@ -1,4 +1,4 @@
-import { getGenreList } from '@api/movie'
+import { getGenreList, getStudioList } from '@api/movie'
 import { MOVIE_STATUSES } from '@constants/movie'
 import Loader from '@layout/Loader'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
@@ -29,6 +29,8 @@ function MoviesToolbar({
 	onSearchChange,
 	genre,
 	onGenreChange,
+	studio,
+	onStudioChange,
 	status,
 	onStatusChange,
 	sortBy,
@@ -39,14 +41,19 @@ function MoviesToolbar({
 	onViewModeChange
 }) {
 	const [genres, setGenres] = useState([])
+	const [studios, setStudios] = useState([])
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
-		const fetchGenres = async () => {
+		const fetchData = async () => {
 			try {
 				setLoading(true)
-				const response = await getGenreList()
-				setGenres(response)
+				const [genresData, studiosData] = await Promise.all([
+					getGenreList(),
+					getStudioList()
+				])
+				setGenres(genresData)
+				setStudios(studiosData)
 			} catch (error) {
 				console.log(error)
 			} finally {
@@ -54,7 +61,7 @@ function MoviesToolbar({
 			}
 		}
 
-		fetchGenres()
+		fetchData()
 	}, [])
 
 	if (loading) {
@@ -71,7 +78,7 @@ function MoviesToolbar({
 				gridTemplateColumns: {
 					xs: '1fr',
 					sm: '1fr 1fr',
-					md: '200px 120px 1fr 150px 40px auto'
+					md: '200px 120px 1fr 1fr 150px 40px auto'
 				},
 				backgroundColor: 'background.paper',
 				padding: 2,
@@ -154,6 +161,46 @@ function MoviesToolbar({
 					<TextField
 						{...params}
 						label="Genres"
+						variant="outlined"
+					/>
+				)}
+				sx={{
+					gridColumn: { xs: 'auto', sm: 'auto', md: 'auto' }
+				}}
+			/>
+
+			<Autocomplete
+				multiple
+				size="small"
+				options={studios}
+				disableCloseOnSelect
+				getOptionLabel={option => option.name}
+				isOptionEqualToValue={(option, value) => option._id === value._id}
+				value={studios.filter(s => studio.includes(s._id))}
+				onChange={(event, newValue) => {
+					onStudioChange(newValue.map(s => s._id))
+				}}
+				renderOption={(props, option, { selected }) => {
+					const { key, ...optionProps } = props
+					return (
+						<li
+							key={key}
+							{...optionProps}
+						>
+							<Checkbox
+								icon={icon}
+								checkedIcon={checkedIcon}
+								style={{ marginRight: 8 }}
+								checked={selected}
+							/>
+							{option.name}
+						</li>
+					)
+				}}
+				renderInput={params => (
+					<TextField
+						{...params}
+						label="Studios"
 						variant="outlined"
 					/>
 				)}
