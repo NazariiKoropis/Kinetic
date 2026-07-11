@@ -10,7 +10,10 @@ import Reports from '@pages/reports'
 import ProtectedRoute from '@routes/ProtectedRoute'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import Movies from './pages/movies'
+import Countries from '@pages/countries'
+import Genres from '@pages/genres'
+import Movies from '@pages/movies'
+import Studios from '@pages/studios'
 
 function App() {
 	const isInitializing = useRefreshUser()
@@ -49,6 +52,19 @@ function App() {
 						path="/movies/edit-movie/:id"
 						element={<MovieFormPage />}
 					/>
+					<Route
+						path="/studios"
+						element={<Studios />}
+					/>
+					<Route
+						path="/countries"
+						element={<Countries />}
+					/>
+					<Route
+						path="/genres"
+						element={<Genres />}
+					/>
+
 					<Route
 						path="/reports"
 						element={<Reports />}

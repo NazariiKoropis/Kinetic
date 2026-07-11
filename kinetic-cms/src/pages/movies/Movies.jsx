@@ -10,8 +10,9 @@ import MoviesGrid from './components/MoviesGrid'
 import MoviesStatsOverview from './components/MoviesStatsOverview'
 import MoviesTable from './components/MoviesTable'
 import MoviesToolbar from './components/MoviesToolbar'
+
 function Movies() {
-	const [viewMode, setViewMode] = useState('grid')
+	const [viewMode, setViewMode] = useState('table')
 	const [activePoster, setActivePoster] = useState(null)
 	const navigate = useNavigate()
 
