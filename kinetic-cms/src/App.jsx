@@ -10,6 +10,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { useRefreshUser } from '@hooks/useRefresh'
 import Loader from '@layout/Loader'
+import MovieFormPage from '@pages/movies/MovieFormPage'
 import ProtectedRoute from '@routes/ProtectedRoute'
 import Movies from './pages/movies'
 
@@ -40,6 +41,15 @@ function App() {
 					<Route
 						path="/movies"
 						element={<Movies />}
+					/>
+
+					<Route
+						path="/movies/add-movie"
+						element={<MovieFormPage />}
+					/>
+					<Route
+						path="/movies/edit-movie/:id"
+						element={<MovieFormPage />}
 					/>
 					<Route
 						path="/reports"

@@ -27,7 +27,11 @@ const movieSchema = new mongoose.Schema({
     required: true,
   }],
   trailer: { type: String, required: true },
-  studios: { type: [String], required: true },
+  studios: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Studio',
+    required: true,
+  }],
   countries: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Country',

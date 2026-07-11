@@ -74,9 +74,10 @@ const getMovies = async (req, res) => {
 
     const [movies, totalMovies] = await Promise.all([
       Movie.find(filter)
-        .select('title poster releaseYear genres countries rating ratingMPAA duration status likesCount dislikesCount')
+        .select('title poster releaseYear genres countries rating ratingMPAA duration status likesCount dislikesCount studios')
         .populate('genres')
         .populate('countries')
+        .populate('studios')
         .sort(sort)
         .skip(skip)
         .limit(limit),
@@ -107,6 +108,7 @@ const getMovieById = async (req, res) => {
     const movie = await Movie.findById(id)
       .populate('genres')
       .populate('countries')
+      .populate('studios')
 
     if (!movie) {
       return res.status(404).json({
@@ -408,9 +410,10 @@ const getRelatedMovies = async (req, res) => {
         { director: movie.director }
       ]
     })
-      .select('title poster releaseYear genres countries rating ratingMPAA duration status likesCount dislikesCount')
+      .select('title poster releaseYear genres countries rating ratingMPAA duration status likesCount dislikesCount studios')
       .populate('genres')
       .populate('countries')
+      .populate('studios')
       .limit(6)
 
     res.status(200).json({

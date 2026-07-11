@@ -20,7 +20,6 @@ function useMovie() {
 		hidden: 0
 	})
 	const [statsLoading, setStatsLoading] = useState(true)
-
 	const [searchTerm, setSearchTerm] = useState('')
 	const [debouncedSearch, setDebouncedSearch] = useState('')
 	const [status, setStatus] = useState('all')
@@ -151,7 +150,6 @@ function useMovie() {
 		totalItems,
 		loading,
 		isFirstLoad,
-
 		stats,
 		statsLoading,
 		filters: {

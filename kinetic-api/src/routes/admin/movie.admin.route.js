@@ -10,9 +10,10 @@ movieAdminRouter.put('/:id', validateBody(movieUpdateSchema), updateMovie)
 
 // update status route
 movieAdminRouter.patch('/status/:id', validateBody(statusUpdateSchema), updateStatus)
+
 movieAdminRouter.delete('/:id', deleteMovieById)
 
-// stats route
+// get dashboard stats route
 movieAdminRouter.get('/stats', getDashboardStats)
 
 export default movieAdminRouter

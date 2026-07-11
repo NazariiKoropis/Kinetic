@@ -12,7 +12,8 @@ const movieCreateSchema = z.object({
 
   duration: z.coerce.number().min(1, 'Duration must be at least 1 minute'),
   trailer: z.string({ required_error: 'Trailer is required' }).min(1, 'Trailer is required'),
-  studios: z.array(z.string().min(2, 'Studio name must be at least 2 characters')).min(1, 'At least one studio is required'),
+  studios: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid Studio ID'))
+    .min(1, 'At least one studio is required'),
 
   description: z.string().min(10, 'Description must be at least 10 characters'),
   director: z.string().min(2, 'Director name must be at least 2 characters'),
@@ -71,7 +72,7 @@ const movieFilterSchema = z.object({
     .optional(),
 
   duration: z.coerce.number().optional(),
-  studios: z.array(z.string()).optional(),
+  studios: z.string().optional(),
 
   ratingMPAA: z.enum(Object.values(MPAA_RATINGS), {
     invalid_type_error: 'Invalid MPAA rating'

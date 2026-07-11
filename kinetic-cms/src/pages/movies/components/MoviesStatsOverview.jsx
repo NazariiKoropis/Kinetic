@@ -5,6 +5,32 @@ import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { Box, Skeleton } from '@mui/material'
 import StatCard from '@shared/StatCard'
+const STAT_ITEMS_CONFIG = [
+	{
+		id: 'all',
+		title: 'All movies',
+		color: '#3B82F6',
+		icon: <MovieCreationIcon />
+	},
+	{
+		id: MOVIE_STATUSES.RELEASED,
+		title: 'Published',
+		color: '#10B981',
+		icon: <DoneAllIcon />
+	},
+	{
+		id: MOVIE_STATUSES.UPCOMING,
+		title: 'Upcoming',
+		color: '#F59E0B',
+		icon: <NewReleasesIcon />
+	},
+	{
+		id: MOVIE_STATUSES.HIDDEN,
+		title: 'Hidden',
+		color: '#EF4444',
+		icon: <VisibilityOffIcon />
+	}
+]
 
 function MoviesStatsOverview({ stats, loading, activeStatus, onStatusSelect }) {
 	if (loading) {
@@ -32,36 +58,10 @@ function MoviesStatsOverview({ stats, loading, activeStatus, onStatusSelect }) {
 		)
 	}
 
-	const statItems = [
-		{
-			id: 'all',
-			title: 'All movies',
-			value: stats?.total ?? 0,
-			color: '#3B82F6',
-			icon: <MovieCreationIcon />
-		},
-		{
-			id: MOVIE_STATUSES.RELEASED,
-			title: 'Published',
-			value: stats?.released ?? 0,
-			color: '#10B981',
-			icon: <DoneAllIcon />
-		},
-		{
-			id: MOVIE_STATUSES.UPCOMING,
-			title: 'Upcoming',
-			value: stats?.upcoming ?? 0,
-			color: '#F59E0B',
-			icon: <NewReleasesIcon />
-		},
-		{
-			id: MOVIE_STATUSES.HIDDEN,
-			title: 'Hidden',
-			value: stats?.hidden ?? 0,
-			color: '#EF4444',
-			icon: <VisibilityOffIcon />
-		}
-	]
+	const statItems = STAT_ITEMS_CONFIG.map(item => ({
+		...item,
+		value: item.id === 'all' ? (stats?.total ?? 0) : (stats?.[item.id] ?? 0)
+	}))
 
 	return (
 		<Box

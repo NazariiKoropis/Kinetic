@@ -1,18 +1,19 @@
-import useMovie from '@hooks/useMovie'
 import Loader from '@layout/Loader'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Button, LinearProgress, Typography } from '@mui/material'
 import ImageDialog from '@ui/ImageDialog'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
+import useMovie from '@hooks/useMovie'
+import { useNavigate } from 'react-router-dom'
 import MoviesGrid from './components/MoviesGrid'
 import MoviesStatsOverview from './components/MoviesStatsOverview'
 import MoviesTable from './components/MoviesTable'
 import MoviesToolbar from './components/MoviesToolbar'
-
 function Movies() {
 	const [viewMode, setViewMode] = useState('grid')
 	const [activePoster, setActivePoster] = useState(null)
+	const navigate = useNavigate()
 
 	const {
 		movies,
@@ -25,6 +26,11 @@ function Movies() {
 		setFilters,
 		operations
 	} = useMovie()
+
+	const onEdit = useCallback(
+		id => navigate(`/movies/edit-movie/${id}`),
+		[navigate]
+	)
 
 	if (isFirstLoad) return <Loader />
 
@@ -57,7 +63,7 @@ function Movies() {
 					variant="contained"
 					startIcon={<AddIcon />}
 					size="large"
-					onClick={() => alert('Create Movie')}
+					onClick={() => navigate('/movies/add-movie')}
 				>
 					Create Movie
 				</Button>
@@ -99,7 +105,7 @@ function Movies() {
 						onStatusChange={operations.handleStatusChange}
 						onMPAAChange={operations.handleMPAAChange}
 						onDelete={operations.handleDeleteMovie}
-						onEdit={id => alert(`Edit movie with ID: ${id}`)}
+						onEdit={onEdit}
 						onPreview={id => alert(`Preview movie with ID: ${id}`)}
 						onPosterClick={setActivePoster}
 					/>
@@ -114,7 +120,7 @@ function Movies() {
 						onStatusChange={operations.handleStatusChange}
 						onMPAAChange={operations.handleMPAAChange}
 						onDelete={operations.handleDeleteMovie}
-						onEdit={id => alert(`Edit ${id}`)}
+						onEdit={onEdit}
 						onPreview={id => alert(`Preview ${id}`)}
 						onPosterClick={setActivePoster}
 					/>
