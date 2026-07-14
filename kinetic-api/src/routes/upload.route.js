@@ -14,8 +14,8 @@ uploadRouter.post('/', checkAuth, checkRole, uploadTempMiddleware.single('file')
     const fileUrl = `/uploads/temp/${req.file.filename}`;
     res.status(200).json({ success: true, url: fileUrl });
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    console.error(e);
     res.status(500).json({ success: false, message: 'Error uploading file' });
   }
 });

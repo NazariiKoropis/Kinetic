@@ -17,8 +17,8 @@ const updateMPAA = async (req, res) => {
 			success: true,
 			message: 'MPAA rating updated successfully',
 		})
-	} catch (error) {
-		console.error(error)
+	} catch (e) {
+		console.error(e)
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error',

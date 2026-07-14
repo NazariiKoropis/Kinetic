@@ -18,8 +18,8 @@ const createCountry = async (req, res) => {
 			message: 'Country created successfully',
 			data: country
 		})
-	} catch (error) {
-		console.error(error)
+	} catch (e) {
+		console.error(e)
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -61,8 +61,8 @@ const updateCountry = async (req, res) => {
 			message: 'Country updated successfully',
 			data: country
 		})
-	} catch (error) {
-		console.error(error)
+	} catch (e) {
+		console.error(e)
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -89,8 +89,8 @@ const deleteCountry = async (req, res) => {
 			success: true,
 			message: 'Country deleted successfully'
 		})
-	} catch (error) {
-		console.error(error)
+	} catch (e) {
+		console.error(e)
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -107,8 +107,8 @@ const getCountries = async (req, res) => {
 			message: 'Countries fetched successfully',
 			data: countries
 		})
-	} catch (error) {
-		console.error(error)
+	} catch (e) {
+		console.error(e)
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
