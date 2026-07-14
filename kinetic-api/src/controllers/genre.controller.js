@@ -1,4 +1,8 @@
 import Genre from '#models/Genre.js'
+import Movie from '#models/Movie.js'
+import slugify from '#utils/slugify.js'
+import mongoose from 'mongoose'
+
 
 const getAllGenres = async (req, res) => {
 	try {
@@ -6,8 +10,7 @@ const getAllGenres = async (req, res) => {
 
 		return res.status(200).json(genres)
 
-	} catch (error) {
-		console.error(error)
+	} catch (e) {
 		return res.status(500).json({
 			success: false,
 			error: 'Internal Server Error'
@@ -17,9 +20,12 @@ const getAllGenres = async (req, res) => {
 
 const createGenre = async (req, res) => {
 	try {
-		const { name } = req.body
+		const { name, slug } = req.body
 
-		const genre = await Genre.create({ name })
+		const genre = await Genre.create({
+			name,
+			slug: slug || slugify(name)
+		})
 
 		if (!genre) {
 			return res.status(404).json({
@@ -33,9 +39,8 @@ const createGenre = async (req, res) => {
 			message: 'Genre created successfully',
 			data: genre
 		})
-	} catch (error) {
+	} catch (e) {
 
-		console.error(error)
 		return res.status(500).json({
 			success: false,
 			error: 'Internal Server Error'
@@ -62,9 +67,8 @@ const deleteGenre = async (req, res) => {
 			success: true,
 			message: 'Genre deleted successfully'
 		})
-	} catch (error) {
+	} catch (e) {
 
-		console.error(error)
 		return res.status(500).json({
 			success: false,
 			error: 'Internal Server Error'
@@ -75,7 +79,7 @@ const deleteGenre = async (req, res) => {
 const updateGenre = async (req, res) => {
 	try {
 		const { id } = req.params
-		const { name } = req.body
+		const { name, slug } = req.body
 
 		const genre = await Genre.findById(id)
 
@@ -86,7 +90,15 @@ const updateGenre = async (req, res) => {
 			})
 		}
 
-		genre.name = name
+		if (name) {
+			genre.name = name
+			if (!slug) {
+				genre.slug = slugify(name)
+			}
+		}
+		if (slug) {
+			genre.slug = slug
+		}
 		await genre.save()
 
 		return res.status(200).json({
@@ -94,9 +106,8 @@ const updateGenre = async (req, res) => {
 			message: 'Genre updated successfully',
 			data: genre
 		})
-	} catch (error) {
+	} catch (Error) {
 
-		console.error(error)
 		return res.status(500).json({
 			success: false,
 			error: 'Internal Server Error'
@@ -108,7 +119,12 @@ const getGenre = async (req, res) => {
 	try {
 		const { id } = req.params
 
-		const genre = await Genre.findById(id)
+		let genre
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			genre = await Genre.findById(id)
+		} else {
+			genre = await Genre.findOne({ slug: id.toLowerCase() })
+		}
 
 		if (!genre) {
 			return res.status(404).json({
@@ -123,9 +139,9 @@ const getGenre = async (req, res) => {
 			data: genre
 		})
 
-	} catch (error) {
+	} catch (e) {
 
-		console.error(error)
+
 		return res.status(500).json({
 			success: false,
 			error: 'Internal Server Error'
@@ -133,7 +149,82 @@ const getGenre = async (req, res) => {
 	}
 }
 
+const getGenreStats = async (req, res) => {
+	try {
+		const totalGenres = await Genre.countDocuments()
+
+		const popularGenreAggregation = await Movie.aggregate([
+			{ $unwind: '$genres' },
+			{ $group: { _id: '$genres', count: { $sum: 1 } } },
+			{ $sort: { count: -1 } },
+			{ $limit: 1 },
+			{
+				$lookup: {
+					from: 'genres',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'genreInfo'
+				}
+			},
+			{ $unwind: { path: '$genreInfo', preserveNullAndEmptyArrays: true } }
+		])
+
+		const viewedGenreAggregation = await Movie.aggregate([
+			{ $unwind: '$genres' },
+			{ $group: { _id: '$genres', totalViews: { $sum: '$views' } } },
+			{ $sort: { totalViews: -1 } },
+			{ $limit: 1 },
+			{
+				$lookup: {
+					from: 'genres',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'genreInfo'
+				}
+			},
+			{ $unwind: { path: '$genreInfo', preserveNullAndEmptyArrays: true } }
+		])
+
+		const ratedGenreAggregation = await Movie.aggregate([
+			{ $unwind: '$genres' },
+			{ $group: { _id: '$genres', avgRating: { $avg: '$rating' } } },
+			{ $sort: { avgRating: -1 } },
+			{ $limit: 1 },
+			{
+				$lookup: {
+					from: 'genres',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'genreInfo'
+				}
+			},
+			{ $unwind: { path: '$genreInfo', preserveNullAndEmptyArrays: true } }
+		])
+
+		const mostPopularGenre = popularGenreAggregation[0]?.genreInfo?.name || '-'
+		const mostViewedGenre = viewedGenreAggregation[0]?.genreInfo?.name || '-'
+		const mostRatedGenre = ratedGenreAggregation[0]?.genreInfo?.name || '-'
+
+
+		return res.status(200).json({
+			success: true,
+
+			data: {
+				totalGenres,
+				mostPopularGenre,
+				mostViewedGenre,
+				mostRatedGenre
+			}
+		})
+
+	} catch (e) {
+		return res.status(500).json({
+			success: false,
+			error: `Internal Server Error`
+		})
+	}
+}
 
 export {
-	createGenre, deleteGenre, getAllGenres, getGenre, updateGenre
+	createGenre, deleteGenre, getAllGenres, getGenre, getGenreStats, updateGenre
 }

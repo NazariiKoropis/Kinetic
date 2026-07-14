@@ -1,6 +1,7 @@
 import { checkAuth, checkRole } from "#middlewares/auth.middleware.js"
 import express from 'express'
 import countryAdminRoutes from './country.admin.route.js'
+import dashboardAdminRoutes from './dashboard.admin.route.js'
 import genreAdminRoutes from './genre.admin.route.js'
 import movieAdminRoutes from './movie.admin.route.js'
 import mpaaAdminRoutes from './mpaa.admin.route.js'
@@ -13,6 +14,7 @@ adminRouter.use(checkAuth, checkRole)
 adminRouter.use('/movie', movieAdminRoutes)
 adminRouter.use('/genre', genreAdminRoutes)
 adminRouter.use('/country', countryAdminRoutes)
+adminRouter.use('/dashboard', dashboardAdminRoutes)
 adminRouter.use('/mpaa', mpaaAdminRoutes)
 adminRouter.use('/studio', studioAdminRoutes)
 

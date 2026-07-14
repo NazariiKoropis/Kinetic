@@ -455,7 +455,7 @@ const getMovieForSearch = async (req, res) => {
   }
 }
 
-const getDashboardStats = async (req, res) => {
+const getMovieStats = async (req, res) => {
   try {
 
     const [total, released, upcoming, hidden] = await Promise.all([
@@ -487,10 +487,9 @@ const getDashboardStats = async (req, res) => {
 export {
   addView,
   createMovie,
-  deleteMovieById, getDashboardStats, getMovieById,
+  deleteMovieById, getMovieById,
   getMovieForSearch,
-  getMovies,
-  getRelatedMovies,
+  getMovies, getMovieStats, getRelatedMovies,
   toggleDislikeMovie,
   toggleLikeMovie,
   updateMovie,
