@@ -35,8 +35,8 @@ function useMovie() {
 			setStatsLoading(true)
 			const response = await getMoviesStats()
 			setStats(response.data)
-		} catch (error) {
-			console.error('Error loading statistics', error)
+		} catch (e) {
+			console.error('Error loading statistics', e)
 		} finally {
 			setStatsLoading(false)
 		}
@@ -68,8 +68,8 @@ function useMovie() {
 			const response = await getMovies(params)
 			setMovies(response.data)
 			setTotalItems(response.pagination?.totalItems || 0)
-		} catch (error) {
-			console.error('Error downloading movies:', error)
+		} catch (e) {
+			console.error('Error downloading movies:', e)
 		} finally {
 			setLoading(false)
 			setIsFirstLoad(false)
@@ -101,8 +101,8 @@ function useMovie() {
 				if (nextStats[newStatus] !== undefined) nextStats[newStatus]++
 				return nextStats
 			})
-		} catch (error) {
-			console.error('Failed to update status:', error)
+		} catch (e) {
+			console.error('Failed to update status:', e)
 		}
 	}
 
@@ -112,8 +112,8 @@ function useMovie() {
 			setMovies(prev =>
 				prev.map(m => (m._id === movieId ? { ...m, ratingMPAA: newMPAA } : m))
 			)
-		} catch (error) {
-			console.error('Failed to update MPAA:', error)
+		} catch (e) {
+			console.error('Failed to update MPAA:', e)
 		}
 	}
 
@@ -135,8 +135,8 @@ function useMovie() {
 					nextStats[movieToDelete.status]--
 				return nextStats
 			})
-		} catch (error) {
-			console.error('Error deleting movie:', error)
+		} catch (e) {
+			console.error('Error deleting movie:', e)
 		}
 	}
 

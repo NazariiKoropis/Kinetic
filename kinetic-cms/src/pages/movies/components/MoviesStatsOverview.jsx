@@ -4,7 +4,7 @@ import MovieCreationIcon from '@mui/icons-material/MovieCreation'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { Box, Skeleton } from '@mui/material'
-import StatCard from '@shared/StatCard'
+import MovieStatCard from '@shared/MovieStatCard'
 const STAT_ITEMS_CONFIG = [
 	{
 		id: 'all',
@@ -97,7 +97,7 @@ function MoviesStatsOverview({ stats, loading, activeStatus, onStatusSelect }) {
 							}
 						}}
 					>
-						<StatCard
+						<MovieStatCard
 							icon={item.icon}
 							title={item.title}
 							value={String(item.value)}

@@ -16,8 +16,8 @@ function App() {
         const response = await fetch('/api/v1')
         const fetchedData = await response.json()
         setData(fetchedData)
-      } catch (error) {
-        console.error('Error fetching data:', error)
+      } catch (e) {
+        console.error('Error fetching data:', e)
       } finally {
         setIsLoading(false)
       }

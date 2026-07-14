@@ -1,4 +1,5 @@
-import { getGenreList, getStudioList } from '@api/movie'
+import { getGenres } from '@api/genre'
+import { getStudioList } from '@api/movie'
 import { MOVIE_STATUSES } from '@constants/movie'
 import Loader from '@layout/Loader'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
@@ -49,13 +50,13 @@ function MoviesToolbar({
 			try {
 				setLoading(true)
 				const [genresData, studiosData] = await Promise.all([
-					getGenreList(),
+					getGenres(),
 					getStudioList()
 				])
 				setGenres(genresData)
 				setStudios(studiosData)
-			} catch (error) {
-				console.log(error)
+			} catch (e) {
+				console.log(e)
 			} finally {
 				setLoading(false)
 			}
