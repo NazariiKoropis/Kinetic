@@ -14,4 +14,10 @@ const updateGenreSchema = z.object({
 		.optional()
 })
 
-export { createGenreSchema, updateGenreSchema }
+const getGenresAdminSchema = z.object({
+	limit: z.coerce.number().optional(),
+	page: z.coerce.number().optional(),
+	search: z.string().optional()
+})
+
+export { createGenreSchema, getGenresAdminSchema, updateGenreSchema }

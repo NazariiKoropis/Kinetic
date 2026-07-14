@@ -106,7 +106,7 @@ const updateGenre = async (req, res) => {
 			message: 'Genre updated successfully',
 			data: genre
 		})
-	} catch (Error) {
+	} catch (e) {
 
 		return res.status(500).json({
 			success: false,
@@ -149,6 +149,63 @@ const getGenre = async (req, res) => {
 	}
 }
 
+const getGenresAdmin = async (req, res) => {
+	try {
+		const { limit = 10, page = 1, search } = req.validatedQuery || {}
+		const skip = (page - 1) * limit
+
+		const matchStage = {}
+		if (search) {
+			matchStage.name = { $regex: search, $options: 'i' }
+		}
+
+		const genres = await Genre.aggregate([
+			{ $match: matchStage },
+			{ $sort: { createdAt: -1 } },
+			{ $skip: skip },
+			{ $limit: limit },
+			{
+				$lookup: {
+					from: 'movies',
+					localField: '_id',
+					foreignField: 'genres',
+					as: 'movies'
+				}
+			},
+			{
+				$addFields: {
+					moviesCount: { $size: '$movies' }
+				}
+			},
+			{
+				$project: {
+					movies: 0
+				}
+			}
+		])
+
+		const totalGenres = await Genre.countDocuments(matchStage)
+
+		return res.status(200).json({
+			success: true,
+			message: 'Genres fetched successfully',
+			data: genres,
+			pagination: {
+				totalItems: totalGenres,
+				totalPages: Math.ceil(totalGenres / limit),
+				currentPage: page,
+				itemsPerPage: limit
+			}
+		})
+
+	} catch (e) {
+		console.error('Error in getGenresAdmin:', e)
+		return res.status(500).json({
+			success: false,
+			error: 'Internal Server Error'
+		})
+	}
+}
 const getGenreStats = async (req, res) => {
 	try {
 		const totalGenres = await Genre.countDocuments()
@@ -201,23 +258,72 @@ const getGenreStats = async (req, res) => {
 			{ $unwind: { path: '$genreInfo', preserveNullAndEmptyArrays: true } }
 		])
 
+		const likedGenreAggregation = await Movie.aggregate([
+			{ $unwind: '$genres' },
+			{
+				$group: {
+					_id: '$genres',
+					totalLikes: { $sum: '$likesCount' },
+					totalDislikes: { $sum: '$dislikesCount' }
+				}
+			},
+			{
+				$addFields: {
+					totalVotes: { $add: ['$totalLikes', '$totalDislikes'] }
+				}
+			},
+			{ $match: { totalVotes: { $gt: 0 } } },
+			{
+				$addFields: {
+					likesPercent: {
+						$multiply: [
+							{ $divide: ['$totalLikes', '$totalVotes'] },
+							100
+						]
+					}
+				}
+			},
+			{ $sort: { likesPercent: -1 } },
+			{ $limit: 1 },
+			{
+				$lookup: {
+					from: 'genres',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'genreInfo'
+				}
+			},
+			{ $unwind: { path: '$genreInfo', preserveNullAndEmptyArrays: true } }
+		])
+
 		const mostPopularGenre = popularGenreAggregation[0]?.genreInfo?.name || '-'
 		const mostViewedGenre = viewedGenreAggregation[0]?.genreInfo?.name || '-'
 		const mostRatedGenre = ratedGenreAggregation[0]?.genreInfo?.name || '-'
 
-
 		return res.status(200).json({
 			success: true,
-
 			data: {
 				totalGenres,
 				mostPopularGenre,
 				mostViewedGenre,
-				mostRatedGenre
+				mostRatedGenre,
+				mostPopular: {
+					name: mostPopularGenre,
+					moviesCount: popularGenreAggregation[0]?.count || 0
+				},
+				mostViewed: {
+					name: mostViewedGenre,
+					views: viewedGenreAggregation[0]?.totalViews || 0
+				},
+				mostLiked: {
+					name: likedGenreAggregation[0]?.genreInfo?.name || '-',
+					likesPercent: likedGenreAggregation[0] ? Math.round(likedGenreAggregation[0].likesPercent) : 0
+				}
 			}
 		})
 
 	} catch (e) {
+		console.error('Error in getGenreStats:', e)
 		return res.status(500).json({
 			success: false,
 			error: `Internal Server Error`
@@ -226,5 +332,5 @@ const getGenreStats = async (req, res) => {
 }
 
 export {
-	createGenre, deleteGenre, getAllGenres, getGenre, getGenreStats, updateGenre
+	createGenre, deleteGenre, getAllGenres, getGenre, getGenresAdmin, getGenreStats, updateGenre
 }

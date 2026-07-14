@@ -10,7 +10,31 @@ const getGenres = async () => {
 	return response.data
 }
 
+const getGenresAdmin = async (params) => {
+	const response = await privateApi.get('/admin/genre', { params })
+	return response.data
+}
+
+const updateGenre = async (id, body) => {
+	const response = await privateApi.put(`/admin/genre/${id}`, body)
+	return response.data
+}
+
+const deleteGenre = async (id) => {
+	const response = await privateApi.delete(`/admin/genre/${id}`)
+	return response.data
+}
+
+const createGenre = async (body) => {
+	const response = await privateApi.post('/admin/genre', body)
+	return response.data
+}
+
 export {
+	createGenre,
+	deleteGenre,
 	getGenres,
-	getGenresStats
+	getGenresAdmin,
+	getGenresStats,
+	updateGenre
 }

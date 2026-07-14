@@ -15,7 +15,7 @@ const genreSchema = new mongoose.Schema({
 		lowercase: true,
 		index: true
 	}
-})
+}, { timestamps: true })
 
 const Genre = mongoose.model('Genre', genreSchema)
 
