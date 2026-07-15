@@ -1,11 +1,10 @@
+import BusinessIcon from '@mui/icons-material/Business'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import HistoryIcon from '@mui/icons-material/History'
 import MovieIcon from '@mui/icons-material/Movie'
 import PeopleIcon from '@mui/icons-material/People'
-import ReportIcon from '@mui/icons-material/Report'
-
-import BusinessIcon from '@mui/icons-material/Business'
 import PublicIcon from '@mui/icons-material/Public'
+import ReportIcon from '@mui/icons-material/Report'
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy'
 
 const MENU_ITEMS = [

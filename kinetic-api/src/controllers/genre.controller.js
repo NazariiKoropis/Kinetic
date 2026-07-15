@@ -151,7 +151,7 @@ const getGenre = async (req, res) => {
 
 const getGenresAdmin = async (req, res) => {
 	try {
-		const { limit = 10, page = 1, search } = req.validatedQuery || {}
+		const { limit = 10, page = 1, search, sortBy = 'createdAt', sortOrder = 'desc' } = req.validatedQuery || {}
 		const skip = (page - 1) * limit
 
 		const matchStage = {}
@@ -159,9 +159,11 @@ const getGenresAdmin = async (req, res) => {
 			matchStage.name = { $regex: search, $options: 'i' }
 		}
 
+		const sortStage = { [sortBy]: sortOrder === 'asc' ? 1 : -1 }
+
 		const genres = await Genre.aggregate([
 			{ $match: matchStage },
-			{ $sort: { createdAt: -1 } },
+			{ $sort: sortStage },
 			{ $skip: skip },
 			{ $limit: limit },
 			{

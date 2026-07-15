@@ -2,18 +2,17 @@ import { useRefreshUser } from '@hooks/useRefresh'
 import Layout from '@layout/Layout'
 import Loader from '@layout/Loader'
 import ChangeHistory from '@pages/change-history'
+import Countries from '@pages/countries'
 import Dashboard from '@pages/dashboard'
+import Genres from '@pages/genres'
 import Login from '@pages/login'
+import Movies from '@pages/movies'
 import MovieFormPage from '@pages/movies/MovieFormPage'
 import People from '@pages/people'
 import Reports from '@pages/reports'
+import Studios from '@pages/studios'
 import ProtectedRoute from '@routes/ProtectedRoute'
 import { Navigate, Route, Routes } from 'react-router-dom'
-
-import Countries from '@pages/countries'
-import Genres from '@pages/genres'
-import Movies from '@pages/movies'
-import Studios from '@pages/studios'
 
 function App() {
 	const isInitializing = useRefreshUser()

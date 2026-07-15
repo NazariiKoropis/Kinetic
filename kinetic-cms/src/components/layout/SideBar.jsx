@@ -18,12 +18,13 @@ import {
 } from '@mui/material'
 import useAuthStore from '@store/authStore'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const DRAWER_WIDTH_OPEN = { lg: '280px', xl: '340px', xxl: '400px' }
 const DRAWER_WIDTH_CLOSED = '72px'
 
 function SideBar() {
+	const navigate = useNavigate()
 	const { logout } = useAuthStore()
 	const [isOpen, setIsOpen] = useState(true)
 

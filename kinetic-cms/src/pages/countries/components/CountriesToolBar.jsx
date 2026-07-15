@@ -12,14 +12,14 @@ import {
 	Typography
 } from '@mui/material'
 
-function GenresToolBar({
+function CountriesToolBar({
 	searchTerm,
 	onSearchChange,
 	sortBy,
 	onSortByChange,
 	sortOrder,
 	onSortOrderChange,
-	onCreateGenre
+	onCreateCountry
 }) {
 	return (
 		<Box
@@ -46,14 +46,14 @@ function GenresToolBar({
 						lineHeight: 1.2
 					}}
 				>
-					Genres Management
+					Countries Management
 				</Typography>
 				<Typography
 					variant="body2"
 					color="text.secondary"
 					sx={{ fontSize: '0.85rem' }}
 				>
-					Organize and manage content categorization.
+					Manage geographical and production origin details for content.
 				</Typography>
 			</Box>
 
@@ -67,7 +67,7 @@ function GenresToolBar({
 				}}
 			>
 				<TextField
-					placeholder="Search genres..."
+					placeholder="Search countries..."
 					size="small"
 					value={searchTerm}
 					onChange={e => onSearchChange(e.target.value)}
@@ -134,7 +134,7 @@ function GenresToolBar({
 				</Box>
 
 				<Button
-					onClick={onCreateGenre}
+					onClick={onCreateCountry}
 					variant="contained"
 					startIcon={<AddIcon />}
 					sx={{
@@ -150,11 +150,11 @@ function GenresToolBar({
 						}
 					}}
 				>
-					Add New Genre
+					Add New Country
 				</Button>
 			</Box>
 		</Box>
 	)
 }
 
-export default GenresToolBar
+export default CountriesToolBar

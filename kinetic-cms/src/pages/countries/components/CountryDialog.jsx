@@ -9,10 +9,9 @@ import {
 	IconButton,
 	TextField
 } from '@mui/material'
-import { generateSlug } from '@utils/slugify'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-function GenreDialog({
+function CountryDialog({
 	open,
 	handleClose,
 	handleSubmit,
@@ -20,36 +19,28 @@ function GenreDialog({
 	initialData = null
 }) {
 	const [name, setName] = useState('')
-	const [slug, setSlug] = useState('')
-	const isSlugCustom = useRef(false)
+	const [code, setCode] = useState('')
 
 	useEffect(() => {
 		if (open) {
 			setName(initialData?.name || '')
-			setSlug(initialData?.slug || '')
-			isSlugCustom.current = mode === 'edit'
+			setCode(initialData?.code || '')
 		}
 	}, [open, initialData, mode])
 
 	const handleNameChange = e => {
-		const value = e.target.value
-		setName(value)
-
-		if (!isSlugCustom.current && mode === 'create') {
-			setSlug(generateSlug(value))
-		}
+		setName(e.target.value)
 	}
 
-	const handleSlugChange = e => {
-		isSlugCustom.current = e.target.value.length > 0
-		setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))
+	const handleCodeChange = e => {
+		setCode(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))
 	}
 
 	const onFormSubmit = e => {
 		e.preventDefault()
-		if (!name.trim() || !slug.trim()) return
+		if (!name.trim() || !code.trim()) return
 
-		handleSubmit({ name: name.trim(), slug: slug.trim() })
+		handleSubmit({ name: name.trim(), code: code.trim() })
 	}
 
 	return (
@@ -71,7 +62,7 @@ function GenreDialog({
 			}}
 		>
 			<DialogTitle sx={{ m: 0, p: 2, fontWeight: 700, fontSize: '1.1rem' }}>
-				{mode === 'create' ? 'Add New Genre' : 'Update Genre'}
+				{mode === 'create' ? 'Add New Country' : 'Update Country'}
 				<IconButton
 					onClick={handleClose}
 					sx={{
@@ -96,27 +87,30 @@ function GenreDialog({
 					sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}
 				>
 					<TextField
-						label="Genre Name"
+						label="Country Name"
 						size="small"
 						fullWidth
 						required
 						autoFocus
 						value={name}
 						onChange={handleNameChange}
-						placeholder="e.g., Наукова фантастика"
+						placeholder="e.g., Україна"
 					/>
 
 					<TextField
-						label="URL Slug"
+						label="Country Code"
 						size="small"
 						fullWidth
 						required
-						value={slug}
-						onChange={handleSlugChange}
-						placeholder="e.g., naukova-fantastyka"
-						helperText="Used for clean SEO-friendly routing on the public website."
+						value={code}
+						onChange={handleCodeChange}
+						placeholder="e.g., UA"
+						helperText="ISO 2 or 3-letter uppercase country code."
 						slotProps={{
 							formHelperText: { sx: { fontSize: '0.7rem', opacity: 0.7 } }
+						}}
+						inputProps={{
+							maxLength: 3
 						}}
 					/>
 				</DialogContent>
@@ -137,7 +131,7 @@ function GenreDialog({
 						size="small"
 						sx={{ textTransform: 'none', px: 3 }}
 					>
-						{mode === 'create' ? 'Create Categories' : 'Save Changes'}
+						{mode === 'create' ? 'Create Country' : 'Save Changes'}
 					</Button>
 				</DialogActions>
 			</Box>
@@ -145,4 +139,4 @@ function GenreDialog({
 	)
 }
 
-export default GenreDialog
+export default CountryDialog

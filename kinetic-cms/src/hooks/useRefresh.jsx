@@ -12,7 +12,7 @@ const useRefreshUser = () => {
 			try {
 				const res = await refreshUser()
 				login(res.user, res.accessToken)
-			} catch (err) {
+			} catch {
 				logout()
 			}
 		}

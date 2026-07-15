@@ -1,6 +1,5 @@
-import axios from 'axios'
-
 import useAuthStore from '@store/authStore'
+import axios from 'axios'
 
 const BASE_URL = '/api/v1'
 

@@ -115,4 +115,67 @@ const getCountries = async (req, res) => {
 		})
 	}
 }
-export { createCountry, deleteCountry, getCountries, updateCountry }
+
+const getCountriesAdmin = async (req, res) => {
+	try {
+		const { limit = 10, page = 1, search, sortBy = 'createdAt', sortOrder = 'desc' } = req.validatedQuery || {}
+		const skip = (page - 1) * limit
+
+		const matchStage = {}
+		if (search) {
+			matchStage.$or = [
+				{ name: { $regex: search, $options: 'i' } },
+				{ code: { $regex: search, $options: 'i' } }
+			]
+		}
+
+		const sortStage = { [sortBy]: sortOrder === 'asc' ? 1 : -1 }
+
+		const countries = await Country.aggregate([
+			{ $match: matchStage },
+			{ $sort: sortStage },
+			{ $skip: skip },
+			{ $limit: limit },
+			{
+				$lookup: {
+					from: 'movies',
+					localField: '_id',
+					foreignField: 'countries',
+					as: 'movies'
+				}
+			},
+			{
+				$addFields: {
+					moviesCount: { $size: '$movies' }
+				}
+			},
+			{
+				$project: {
+					movies: 0
+				}
+			}
+		])
+
+		const totalCountries = await Country.countDocuments(matchStage)
+
+		return res.status(200).json({
+			success: true,
+			message: 'Countries fetched successfully',
+			data: countries,
+			pagination: {
+				totalItems: totalCountries,
+				totalPages: Math.ceil(totalCountries / limit),
+				currentPage: page,
+				itemsPerPage: limit
+			}
+		})
+	} catch (e) {
+		console.error('Error in getCountriesAdmin:', e)
+		return res.status(500).json({
+			success: false,
+			message: 'Internal server error'
+		})
+	}
+}
+
+export { createCountry, deleteCountry, getCountries, getCountriesAdmin, updateCountry }

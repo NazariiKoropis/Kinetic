@@ -17,7 +17,9 @@ const updateGenreSchema = z.object({
 const getGenresAdminSchema = z.object({
 	limit: z.coerce.number().optional(),
 	page: z.coerce.number().optional(),
-	search: z.string().optional()
+	search: z.string().optional(),
+	sortBy: z.enum(['createdAt', 'updatedAt']).optional(),
+	sortOrder: z.enum(['asc', 'desc']).optional()
 })
 
 export { createGenreSchema, getGenresAdminSchema, updateGenreSchema }

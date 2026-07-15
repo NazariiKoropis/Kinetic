@@ -24,9 +24,13 @@ function Genres() {
 		limit,
 		search,
 		totalItems,
+		sortBy,
+		sortOrder,
 		setPage,
 		setLimit,
 		setSearch,
+		setSortBy,
+		setSortOrder,
 		onDelete,
 		onCreate,
 		onUpdate
@@ -55,6 +59,10 @@ function Genres() {
 			<GenresToolBar
 				searchTerm={search}
 				onSearchChange={setSearch}
+				sortBy={sortBy}
+				onSortByChange={setSortBy}
+				sortOrder={sortOrder}
+				onSortOrderChange={setSortOrder}
 				onCreateGenre={() =>
 					setModalConfig({ open: true, mode: 'create', genreData: null })
 				}

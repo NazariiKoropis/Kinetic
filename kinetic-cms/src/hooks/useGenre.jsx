@@ -18,6 +18,8 @@ function useGenre() {
 	const [search, setSearch] = useState('')
 	const [debouncedSearch, setDebouncedSearch] = useState('')
 	const [totalItems, setTotalItems] = useState(0)
+	const [sortBy, setSortBy] = useState('createdAt')
+	const [sortOrder, setSortOrder] = useState('desc')
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
@@ -34,7 +36,9 @@ function useGenre() {
 			const response = await getGenresAdmin({
 				page,
 				limit,
-				search: debouncedSearch
+				search: debouncedSearch,
+				sortBy,
+				sortOrder
 			})
 			if (response.success) {
 				setGenres(response.data)
@@ -46,7 +50,7 @@ function useGenre() {
 			setLoading(false)
 			setIsFirstLoad(false)
 		}
-	}, [page, limit, debouncedSearch])
+	}, [page, limit, debouncedSearch, sortBy, sortOrder])
 
 	const fetchStats = useCallback(async () => {
 		try {
@@ -123,9 +127,13 @@ function useGenre() {
 		limit,
 		search,
 		totalItems,
+		sortBy,
+		sortOrder,
 		setPage,
 		setLimit,
 		setSearch,
+		setSortBy,
+		setSortOrder,
 
 		onCreate: handleCreateGenre,
 		onUpdate: handleUpdateGenre,
