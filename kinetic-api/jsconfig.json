@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "#config/*": ["./src/services/*"],
+      "#config/*": ["./src/config/*"],
       "#constants/*": ["./src/constants/*"],
       "#controllers/*": ["./src/controllers/*"],
       "#middlewares/*": ["./src/middlewares/*"],

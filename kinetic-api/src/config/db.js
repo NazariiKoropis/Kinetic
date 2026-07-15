@@ -5,7 +5,7 @@ const connectDB = async () => {
     const uri = process.env.CONNECTION_URI
 
     if (!uri) {
-        console.error("❌ CRITICAL ERROR: CONNECTION_URI is not defined in the .env file!")
+        console.error("CRITICAL ERROR: CONNECTION_URI is not defined in the .env file!")
         process.exit(1)
     }
 
