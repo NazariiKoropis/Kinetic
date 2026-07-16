@@ -1,11 +1,11 @@
-import CategoryIcon from '@mui/icons-material/Category'
+import BusinessIcon from '@mui/icons-material/Business'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import MovieIcon from '@mui/icons-material/Movie'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import StarIcon from '@mui/icons-material/Star'
 import { Box } from '@mui/material'
 import StatCard from '@shared/StatCard'
 
-const formatViews = (num) => {
+const formatViews = num => {
 	if (!num) return '0'
 	if (num >= 1000000) {
 		return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
@@ -16,12 +16,12 @@ const formatViews = (num) => {
 	return num.toString()
 }
 
-function GenresStatsOverview({ stats }) {
+function StudiosStatsOverview({ stats }) {
 	const statItems = [
 		{
-			title: 'Total genres',
-			value: stats?.totalGenres ?? 0,
-			icon: <CategoryIcon />,
+			title: 'Total studios',
+			value: stats?.totalStudios ?? 0,
+			icon: <BusinessIcon />,
 			color: '#3B82F6'
 		},
 		{
@@ -29,21 +29,30 @@ function GenresStatsOverview({ stats }) {
 			value: stats?.mostViewed?.name ?? '-',
 			icon: <LocalFireDepartmentIcon />,
 			color: '#10B981',
-			description: stats?.mostViewed?.views !== undefined ? `${formatViews(stats.mostViewed.views)} views` : '0 views'
+			description:
+				stats?.mostViewed?.views !== undefined
+					? `${formatViews(stats.mostViewed.views)} views`
+					: '0 views'
 		},
 		{
 			title: 'CONTENT LEADER',
-			value: stats?.mostPopular?.name ?? '-',
+			value: stats?.mostProductive?.name ?? '-',
 			icon: <MovieIcon />,
 			color: '#F59E0B',
-			description: stats?.mostPopular?.moviesCount !== undefined ? `${stats.mostPopular.moviesCount} titles` : '0 titles'
+			description:
+				stats?.mostProductive?.moviesCount !== undefined
+					? `${stats.mostProductive.moviesCount} titles`
+					: '0 titles'
 		},
 		{
-			title: 'MOST LIKED',
-			value: stats?.mostLiked?.name ?? '-',
-			icon: <ThumbUpIcon />,
+			title: 'HIGHEST RATED',
+			value: stats?.highestRated?.name ?? '-',
+			icon: <StarIcon />,
 			color: '#EF4444',
-			description: stats?.mostLiked?.likesPercent !== undefined ? `${stats.mostLiked.likesPercent}% Positive` : '0% Positive'
+			description:
+				stats?.highestRated?.avgRating !== undefined
+					? `${Number(stats.highestRated.avgRating).toFixed(1)} / 10 rating`
+					: '0.0 / 10 rating'
 		}
 	]
 
@@ -69,10 +78,11 @@ function GenresStatsOverview({ stats }) {
 					icon={item.icon}
 					color={item.color}
 					description={item.description}
+					component={'h6'}
 				/>
 			))}
 		</Box>
 	)
 }
 
-export default GenresStatsOverview
+export default StudiosStatsOverview

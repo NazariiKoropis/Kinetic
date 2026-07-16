@@ -10,8 +10,8 @@ import {
 	Tooltip,
 	Typography
 } from '@mui/material'
-import MpaaSelect from '@shared/MpaaSelect'
-import StatusSelect from '@shared/StatusSelect'
+import MpaaSelect from '@ui/MpaaSelect'
+import StatusSelect from '@ui/StatusSelect'
 
 function MovieCard({
 	movie,

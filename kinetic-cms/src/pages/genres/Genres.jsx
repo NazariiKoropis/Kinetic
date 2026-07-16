@@ -1,9 +1,9 @@
 import useGenre from '@hooks/useGenre'
 import Loader from '@layout/Loader'
 import { Box, LinearProgress, Stack } from '@mui/material'
+import EntityDialog from '@ui/EntityDialog'
 import { useState } from 'react'
 
-import GenreDialog from './components/GenreDialog'
 import GenresStastOverview from './components/GenresStastOverview'
 import GenresTable from './components/GenresTable'
 import GenresToolBar from './components/GenresToolBar'
@@ -83,17 +83,23 @@ function Genres() {
 					onDelete={onDelete}
 					onEdit={id => {
 						const currentGenre = genres.find(g => g._id === id)
-						setModalConfig({ open: true, mode: 'edit', genreData: currentGenre })
+						setModalConfig({
+							open: true,
+							mode: 'edit',
+							genreData: currentGenre
+						})
 					}}
 				/>
 			</Box>
 
-			<GenreDialog
+			<EntityDialog
 				open={modalConfig.open}
 				mode={modalConfig.mode}
 				initialData={modalConfig.genreConfig || modalConfig.genreData}
 				handleClose={handleCloseModal}
 				handleSubmit={handleFormSubmit}
+				entityName="Genre"
+				hasSlug={true}
 			/>
 		</Stack>
 	)

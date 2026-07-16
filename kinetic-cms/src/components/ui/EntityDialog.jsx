@@ -12,30 +12,45 @@ import {
 import { generateSlug } from '@utils/slugify'
 import { useEffect, useRef, useState } from 'react'
 
-function GenreDialog({
+const namePlaceholders = {
+	Genre: 'e.g., Наукова фантастика',
+	Country: 'e.g., Україна',
+	Studio: 'e.g., Warner Bros.'
+}
+
+function EntityDialog({
 	open,
 	handleClose,
 	handleSubmit,
 	mode = 'create',
-	initialData = null
+	initialData = null,
+	entityName = 'Genre',
+	hasSlug = false,
+	hasCode = false
 }) {
 	const [name, setName] = useState('')
 	const [slug, setSlug] = useState('')
+	const [code, setCode] = useState('')
 	const isSlugCustom = useRef(false)
 
 	useEffect(() => {
 		if (open) {
 			setName(initialData?.name || '')
-			setSlug(initialData?.slug || '')
-			isSlugCustom.current = mode === 'edit'
+			if (hasSlug) {
+				setSlug(initialData?.slug || '')
+				isSlugCustom.current = mode === 'edit'
+			}
+			if (hasCode) {
+				setCode(initialData?.code || '')
+			}
 		}
-	}, [open, initialData, mode])
+	}, [open, initialData, mode, hasSlug, hasCode])
 
 	const handleNameChange = e => {
 		const value = e.target.value
 		setName(value)
 
-		if (!isSlugCustom.current && mode === 'create') {
+		if (hasSlug && !isSlugCustom.current && mode === 'create') {
 			setSlug(generateSlug(value))
 		}
 	}
@@ -45,12 +60,30 @@ function GenreDialog({
 		setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))
 	}
 
+	const handleCodeChange = e => {
+		setCode(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))
+	}
+
 	const onFormSubmit = e => {
 		e.preventDefault()
-		if (!name.trim() || !slug.trim()) return
+		if (!name.trim()) return
 
-		handleSubmit({ name: name.trim(), slug: slug.trim() })
+		const payload = { name: name.trim() }
+
+		if (hasSlug) {
+			if (!slug.trim()) return
+			payload.slug = slug.trim()
+		}
+
+		if (hasCode) {
+			if (!code.trim()) return
+			payload.code = code.trim()
+		}
+
+		handleSubmit(payload)
 	}
+
+	const displayEntityName = entityName.charAt(0).toUpperCase() + entityName.slice(1)
 
 	return (
 		<Dialog
@@ -71,7 +104,7 @@ function GenreDialog({
 			}}
 		>
 			<DialogTitle sx={{ m: 0, p: 2, fontWeight: 700, fontSize: '1.1rem' }}>
-				{mode === 'create' ? 'Add New Genre' : 'Update Genre'}
+				{mode === 'create' ? `Add New ${displayEntityName}` : `Update ${displayEntityName}`}
 				<IconButton
 					onClick={handleClose}
 					sx={{
@@ -96,29 +129,50 @@ function GenreDialog({
 					sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}
 				>
 					<TextField
-						label="Genre Name"
+						label={`${displayEntityName} Name`}
 						size="small"
 						fullWidth
 						required
 						autoFocus
 						value={name}
 						onChange={handleNameChange}
-						placeholder="e.g., Наукова фантастика"
+						placeholder={namePlaceholders[entityName] || ''}
 					/>
 
-					<TextField
-						label="URL Slug"
-						size="small"
-						fullWidth
-						required
-						value={slug}
-						onChange={handleSlugChange}
-						placeholder="e.g., naukova-fantastyka"
-						helperText="Used for clean SEO-friendly routing on the public website."
-						slotProps={{
-							formHelperText: { sx: { fontSize: '0.7rem', opacity: 0.7 } }
-						}}
-					/>
+					{hasSlug && (
+						<TextField
+							label="URL Slug"
+							size="small"
+							fullWidth
+							required
+							value={slug}
+							onChange={handleSlugChange}
+							placeholder="e.g., naukova-fantastyka"
+							helperText="Used for clean SEO-friendly routing on the public website."
+							slotProps={{
+								formHelperText: { sx: { fontSize: '0.7rem', opacity: 0.7 } }
+							}}
+						/>
+					)}
+
+					{hasCode && (
+						<TextField
+							label="Country Code"
+							size="small"
+							fullWidth
+							required
+							value={code}
+							onChange={handleCodeChange}
+							placeholder="e.g., UA"
+							helperText="ISO 2 or 3-letter uppercase country code."
+							slotProps={{
+								formHelperText: { sx: { fontSize: '0.7rem', opacity: 0.7 } }
+							}}
+							inputProps={{
+								maxLength: 3
+							}}
+						/>
+					)}
 				</DialogContent>
 
 				<DialogActions sx={{ p: 2, gap: 1 }}>
@@ -137,7 +191,7 @@ function GenreDialog({
 						size="small"
 						sx={{ textTransform: 'none', px: 3 }}
 					>
-						{mode === 'create' ? 'Create Categories' : 'Save Changes'}
+						{mode === 'create' ? `Create ${displayEntityName}` : 'Save Changes'}
 					</Button>
 				</DialogActions>
 			</Box>
@@ -145,4 +199,4 @@ function GenreDialog({
 	)
 }
 
-export default GenreDialog
+export default EntityDialog

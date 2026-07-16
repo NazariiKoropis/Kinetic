@@ -1,7 +1,14 @@
 import { Box, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
-function GenreStatCard({ icon, title, value, color, description = '' }) {
+function StatCard({
+	icon,
+	title,
+	value,
+	color,
+	description = '',
+	component = 'h4'
+}) {
 	return (
 		<Box
 			sx={{
@@ -63,7 +70,7 @@ function GenreStatCard({ icon, title, value, color, description = '' }) {
 
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
 				<Typography
-					variant="h4"
+					variant={component}
 					sx={{
 						color: 'text.primary',
 						fontWeight: 700,
@@ -91,4 +98,4 @@ function GenreStatCard({ icon, title, value, color, description = '' }) {
 	)
 }
 
-export default GenreStatCard
+export default StatCard

@@ -1,11 +1,11 @@
 import useCountry from '@hooks/useCountry'
 import Loader from '@layout/Loader'
 import { Box, LinearProgress, Stack } from '@mui/material'
+import EntityDialog from '@ui/EntityDialog'
 import { useState } from 'react'
 
 import CountriesTable from './components/CountriesTable'
 import CountriesToolBar from './components/CountriesToolBar'
-import CountryDialog from './components/CountryDialog'
 
 function Countries() {
 	const [modalConfig, setModalConfig] = useState({
@@ -79,17 +79,23 @@ function Countries() {
 					onDelete={onDelete}
 					onEdit={id => {
 						const currentCountry = countries.find(c => c._id === id)
-						setModalConfig({ open: true, mode: 'edit', countryData: currentCountry })
+						setModalConfig({
+							open: true,
+							mode: 'edit',
+							countryData: currentCountry
+						})
 					}}
 				/>
 			</Box>
 
-			<CountryDialog
+			<EntityDialog
 				open={modalConfig.open}
 				mode={modalConfig.mode}
 				initialData={modalConfig.countryConfig || modalConfig.countryData}
 				handleClose={handleCloseModal}
 				handleSubmit={handleFormSubmit}
+				entityName="Country"
+				hasCode={true}
 			/>
 		</Stack>
 	)
