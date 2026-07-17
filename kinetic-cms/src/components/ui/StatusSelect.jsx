@@ -2,7 +2,7 @@ import { MOVIE_STATUSES } from '@constants/movie'
 import { MenuItem, Select } from '@mui/material'
 import { getStatusColor } from '@utils/movie'
 
-function StatusSelect({ value, onChange, fullWidth = false, sx = {} }) {
+function StatusSelect({ value, onChange, fullWidth = false, sx = {}, ...props }) {
 	const statusColor = getStatusColor(value || MOVIE_STATUSES.RELEASED)
 
 	return (
@@ -18,6 +18,7 @@ function StatusSelect({ value, onChange, fullWidth = false, sx = {} }) {
 				},
 				...sx
 			}}
+			{...props}
 		>
 			{Object.values(MOVIE_STATUSES).map(status => (
 				<MenuItem
