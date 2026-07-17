@@ -36,7 +36,7 @@ privateApi.interceptors.response.use(
       originalRequest._retry = true
       try {
 
-        const res = await publicApi.post('/auth/refresh')
+        const res = await publicApi.post('/web/auth/refresh')
         const { accessToken, user } = res.data
 
         useAuthStore.getState().login(user, accessToken)

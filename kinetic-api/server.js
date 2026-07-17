@@ -6,16 +6,9 @@ import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 
-import authRouter from '#routes/auth.route.js'
-import countryRouter from '#routes/country.route.js'
-import genreRouter from '#routes/genre.route.js'
-import movieRouter from '#routes/movie.route.js'
-import studioRouter from '#routes/studio.route.js'
-import uploadRouter from '#routes/upload.route.js'
+import apiRouter from '#routes/index.js'
 
 import connectDB from '#config/db.js'
-
-import adminRouter from "#routes/admin/index.js"
 
 connectDB()
 
@@ -42,17 +35,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/v1', (req, res) => {
-    res.json({ message: 'Kinetic API is running successfully!' })
+    res.json({ message: 'Kinetic API v1  is running successfully!' })
 })
 
-app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/movie', movieRouter)
-app.use('/api/v1/genre', genreRouter)
-app.use('/api/v1/country', countryRouter)
-app.use('/api/v1/studio', studioRouter)
-
-app.use('/api/v1/admin', adminRouter)
-
-app.use('/api/v1/upload', uploadRouter)
+app.use('/api/v1', apiRouter)
 
 app.listen(port, host, () => console.log(`Server running at http://localhost:${port}/`))

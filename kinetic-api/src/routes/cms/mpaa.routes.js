@@ -3,9 +3,8 @@ import { validateBody } from '#middlewares/validator.middleware.js'
 import { mpaaSchema } from '#schemas/mpaa.schema.js'
 import express from 'express'
 
-const mpaaAdminRouter = express.Router()
+const mpaaCmsRouter = express.Router()
 
-mpaaAdminRouter.put('/:id', validateBody(mpaaSchema), updateMPAA)
+mpaaCmsRouter.put('/:id', validateBody(mpaaSchema), updateMPAA)
 
-export default mpaaAdminRouter
-
+export default mpaaCmsRouter
